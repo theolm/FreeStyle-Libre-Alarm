@@ -1,0 +1,6 @@
+<?xml version="1.0" encoding="utf-8"?>
+<foreground-service-types xmlns:android="http://schemas.android.com/apk/res/android">
+    <foreground-service-type
+        android:name="specialUse"
+        android:description="@string/alarm_foreground_service_description" />
+</foreground-service-types>

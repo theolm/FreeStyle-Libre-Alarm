@@ -1,0 +1,4 @@
+<resources>
+    <string name="app_name">Matthias Vive</string>
+    <string name="alarm_foreground_service_description">Executa o serviço de alarme em primeiro plano para garantir que o alarme do FreeStyle Libre toque mesmo quando o app está em segundo plano.</string>
+</resources>
