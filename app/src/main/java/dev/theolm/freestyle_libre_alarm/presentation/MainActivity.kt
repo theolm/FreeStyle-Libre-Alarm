@@ -41,8 +41,9 @@ import dev.theolm.freestyle_libre_alarm.data.service.AlarmForegroundService
 import dev.theolm.freestyle_libre_alarm.presentation.di.AppModule
 import dev.theolm.freestyle_libre_alarm.presentation.ui.history.HistoryScreen
 import dev.theolm.freestyle_libre_alarm.presentation.ui.monitoring.MonitoringScreen
+import dev.theolm.freestyle_libre_alarm.presentation.ui.settings.DownloadCompleteDialog
 import dev.theolm.freestyle_libre_alarm.presentation.ui.settings.DownloadProgressDialog
-import dev.theolm.freestyle_libre_alarm.presentation.ui.settings.ErrorDialog
+import dev.theolm.freestyle_libre_alarm.presentation.ui.settings.NeedsPermissionDialog
 import dev.theolm.freestyle_libre_alarm.presentation.ui.settings.SettingsScreen
 import dev.theolm.freestyle_libre_alarm.presentation.ui.settings.UpdateAvailableDialog
 import dev.theolm.freestyle_libre_alarm.presentation.ui.theme.FreeStyleLibreAlarmTheme
@@ -90,13 +91,6 @@ class MainActivity : ComponentActivity() {
                 updateViewModel.checkForUpdate(isAutomatic = true)
             }
 
-            LaunchedEffect(updateState) {
-                if (updateState is UpdateUiState.Downloaded) {
-                    updateViewModel.installUpdate(this@MainActivity)
-                    updateViewModel.resetState()
-                }
-            }
-
             FreeStyleLibreAlarmTheme(darkTheme = darkTheme) {
                 Surface(
                     modifier = Modifier.fillMaxSize(),
@@ -107,7 +101,16 @@ class MainActivity : ComponentActivity() {
                         onDismissUpdate = { updateViewModel.dismissUpdate() },
                         onDownloadUpdate = { updateViewModel.downloadUpdate() },
                         onCancelDownload = { updateViewModel.cancelDownload() },
-                        onDismissError = { updateViewModel.resetState() }
+                        onDismissError = { updateViewModel.resetState() },
+                        onRequestPermission = {
+                            updateViewModel.requestInstallPermission(this@MainActivity)
+                        },
+                        onRetryInstall = {
+                            updateViewModel.retryInstallAfterPermission(this@MainActivity)
+                        },
+                        onInstall = {
+                            updateViewModel.installUpdate(this@MainActivity)
+                        }
                     )
                 }
             }
@@ -121,7 +124,10 @@ fun MainScreen(
     onDismissUpdate: () -> Unit = {},
     onDownloadUpdate: () -> Unit = {},
     onCancelDownload: () -> Unit = {},
-    onDismissError: () -> Unit = {}
+    onDismissError: () -> Unit = {},
+    onRequestPermission: () -> Unit = {},
+    onRetryInstall: () -> Unit = {},
+    onInstall: () -> Unit = {}
 ) {
     val navController = rememberNavController()
     val navBackStackEntry by navController.currentBackStackEntryAsState()
@@ -145,6 +151,18 @@ fun MainScreen(
             DownloadProgressDialog(
                 progress = updateState.progress,
                 onCancel = onCancelDownload
+            )
+        }
+        is UpdateUiState.NeedsPermission -> {
+            NeedsPermissionDialog(
+                onConfirm = onRequestPermission,
+                onDismiss = onRetryInstall
+            )
+        }
+        is UpdateUiState.Downloaded -> {
+            DownloadCompleteDialog(
+                onInstall = onInstall,
+                onDismiss = onDismissError
             )
         }
         else -> { }
