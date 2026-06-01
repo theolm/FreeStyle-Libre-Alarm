@@ -155,6 +155,23 @@ class UpdateViewModelTest {
         assertTrue(fakeUpdateRepository.cleanupCalled)
     }
 
+    @Test
+    fun `installUpdate without permission transitions to NeedsPermission`() = runTest {
+        fakeUpdateRepository.updateResult = CheckUpdateResult.Available(
+            UpdateInfo("v0.0.3", "Changelog", "https://example.com/app.apk")
+        )
+        val mockFile = File.createTempFile("test", ".apk")
+        fakeUpdateRepository.downloadResult = mockFile
+
+        viewModel.checkForUpdate()
+        testDispatcher.scheduler.advanceUntilIdle()
+
+        viewModel.downloadUpdate()
+        testDispatcher.scheduler.advanceUntilIdle()
+
+        assertTrue(viewModel.uiState.value is UpdateUiState.Downloaded)
+    }
+
     // Fake repositories for testing
     private class FakeUpdateRepository : UpdateRepository {
         var updateResult: CheckUpdateResult = CheckUpdateResult.UpToDate

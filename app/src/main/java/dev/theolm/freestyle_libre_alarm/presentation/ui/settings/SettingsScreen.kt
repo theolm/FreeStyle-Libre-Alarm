@@ -287,6 +287,42 @@ fun SettingsScreen() {
                                 }
                             }
                         }
+                        is UpdateUiState.Downloaded -> {
+                            Column(
+                                modifier = Modifier.fillMaxWidth(),
+                                verticalArrangement = Arrangement.spacedBy(8.dp)
+                            ) {
+                                Text(
+                                    text = "Download concluído!",
+                                    style = MaterialTheme.typography.bodyLarge,
+                                    color = MaterialTheme.colorScheme.primary
+                                )
+                                Button(
+                                    onClick = { updateViewModel.installUpdate(context) },
+                                    modifier = Modifier.fillMaxWidth()
+                                ) {
+                                    Text("Instalar agora")
+                                }
+                            }
+                        }
+                        is UpdateUiState.NeedsPermission -> {
+                            Column(
+                                modifier = Modifier.fillMaxWidth(),
+                                verticalArrangement = Arrangement.spacedBy(8.dp)
+                            ) {
+                                Text(
+                                    text = "Permissão necessária para instalar atualizações",
+                                    style = MaterialTheme.typography.bodyMedium,
+                                    color = MaterialTheme.colorScheme.error
+                                )
+                                Button(
+                                    onClick = { updateViewModel.requestInstallPermission(context) },
+                                    modifier = Modifier.fillMaxWidth()
+                                ) {
+                                    Text("Abrir configurações")
+                                }
+                            }
+                        }
                         else -> {
                             Row(
                                 modifier = Modifier.fillMaxWidth(),
