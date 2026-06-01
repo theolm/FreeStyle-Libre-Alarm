@@ -20,12 +20,16 @@ import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.Spacer
+import androidx.compose.foundation.layout.width
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Warning
 import androidx.compose.material3.Button
 import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.OutlinedButton
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
@@ -49,6 +53,7 @@ import dev.theolm.freestyle_libre_alarm.presentation.ui.theme.Coral
 import dev.theolm.freestyle_libre_alarm.presentation.ui.theme.FreeStyleLibreAlarmTheme
 import dev.theolm.freestyle_libre_alarm.presentation.ui.theme.SurfaceDarkElevated
 import kotlinx.coroutines.launch
+import kotlinx.coroutines.Dispatchers
 
 class AlarmActivity : ComponentActivity() {
 
@@ -91,7 +96,8 @@ class AlarmActivity : ComponentActivity() {
             FreeStyleLibreAlarmTheme(darkTheme = darkTheme) {
                 AlarmScreen(
                     isDarkTheme = darkTheme,
-                    onDismiss = { dismissAlarm() }
+                    onDismiss = { dismissAlarm() },
+                    onSnooze = { minutes -> snoozeAlarm(minutes) }
                 )
             }
         }
@@ -122,6 +128,19 @@ class AlarmActivity : ComponentActivity() {
         finish()
     }
 
+    private fun snoozeAlarm(minutes: Int) {
+        AlarmManager.stopAlarm()
+
+        val settingsRepository = AppModule.provideSettingsRepository(this)
+        val endTime = System.currentTimeMillis() + (minutes * 60 * 1000)
+
+        lifecycleScope.launch(Dispatchers.IO) {
+            settingsRepository.updateSnoozeEndTime(endTime)
+        }
+
+        finish()
+    }
+
     private fun showOnLockScreen() {
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O_MR1) {
             setShowWhenLocked(true)
@@ -139,7 +158,8 @@ class AlarmActivity : ComponentActivity() {
 @Composable
 fun AlarmScreen(
     isDarkTheme: Boolean,
-    onDismiss: () -> Unit
+    onDismiss: () -> Unit,
+    onSnooze: (Int) -> Unit
 ) {
     Box(
         modifier = Modifier
@@ -170,7 +190,7 @@ fun AlarmScreen(
             )
 
             Button(
-                onClick = onDismiss,
+                onClick = { onSnooze(10) },
                 modifier = Modifier
                     .fillMaxWidth()
                     .height(56.dp),
@@ -185,6 +205,45 @@ fun AlarmScreen(
                     style = MaterialTheme.typography.titleLarge,
                     fontWeight = FontWeight.Medium
                 )
+            }
+
+            Row(
+                modifier = Modifier.fillMaxWidth(),
+                horizontalArrangement = Arrangement.spacedBy(8.dp)
+            ) {
+                OutlinedButton(
+                    onClick = { onSnooze(30) },
+                    modifier = Modifier.weight(1f),
+                    shape = RoundedCornerShape(8.dp),
+                    colors = ButtonDefaults.outlinedButtonColors(
+                        containerColor = MaterialTheme.colorScheme.onPrimary.copy(alpha = 0.1f),
+                        contentColor = MaterialTheme.colorScheme.onPrimary
+                    )
+                ) {
+                    Text("30 min")
+                }
+                OutlinedButton(
+                    onClick = { onSnooze(60) },
+                    modifier = Modifier.weight(1f),
+                    shape = RoundedCornerShape(8.dp),
+                    colors = ButtonDefaults.outlinedButtonColors(
+                        containerColor = MaterialTheme.colorScheme.onPrimary.copy(alpha = 0.1f),
+                        contentColor = MaterialTheme.colorScheme.onPrimary
+                    )
+                ) {
+                    Text("1 h")
+                }
+                OutlinedButton(
+                    onClick = { onSnooze(180) },
+                    modifier = Modifier.weight(1f),
+                    shape = RoundedCornerShape(8.dp),
+                    colors = ButtonDefaults.outlinedButtonColors(
+                        containerColor = MaterialTheme.colorScheme.onPrimary.copy(alpha = 0.1f),
+                        contentColor = MaterialTheme.colorScheme.onPrimary
+                    )
+                ) {
+                    Text("3 h")
+                }
             }
         }
     }

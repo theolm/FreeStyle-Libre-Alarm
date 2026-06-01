@@ -52,6 +52,13 @@ class LibreNotificationListenerService : NotificationListenerService() {
 
                 val settings = settingsRepository.settings.first()
                 if (settings.isAlarmEnabled) {
+                    // Check if snooze is active
+                    val currentTime = System.currentTimeMillis()
+                    if (settings.snoozeEndTime > currentTime) {
+                        // Snooze is active, ignore this notification
+                        return@launch
+                    }
+
                     when (type) {
                         GlucoseType.HIGH -> if (settings.isHighGlucoseEnabled) {
                             AlarmManager.triggerAlarm()

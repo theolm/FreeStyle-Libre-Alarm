@@ -30,4 +30,8 @@ class SettingsRepositoryImpl(
     override suspend fun updateDarkModeEnabled(enabled: Boolean) {
         dataStore.updateDarkModeEnabled(enabled)
     }
+
+    override suspend fun updateSnoozeEndTime(endTime: Long) {
+        dataStore.updateSnoozeEndTime(endTime)
+    }
 }

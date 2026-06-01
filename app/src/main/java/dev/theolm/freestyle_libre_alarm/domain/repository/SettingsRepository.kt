@@ -10,4 +10,5 @@ interface SettingsRepository {
     suspend fun updateLowGlucoseEnabled(enabled: Boolean)
     suspend fun updateHighGlucoseEnabled(enabled: Boolean)
     suspend fun updateDarkModeEnabled(enabled: Boolean)
+    suspend fun updateSnoozeEndTime(endTime: Long)
 }

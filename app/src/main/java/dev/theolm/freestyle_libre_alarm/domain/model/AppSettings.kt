@@ -5,5 +5,6 @@ data class AppSettings(
     val librePackageName: String = "com.freestylelibre.app",
     val isLowGlucoseEnabled: Boolean = true,
     val isHighGlucoseEnabled: Boolean = true,
-    val isDarkModeEnabled: Boolean = false
+    val isDarkModeEnabled: Boolean = false,
+    val snoozeEndTime: Long = 0L
 )

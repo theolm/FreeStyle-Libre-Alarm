@@ -6,6 +6,7 @@ import androidx.datastore.preferences.core.Preferences
 import androidx.datastore.preferences.core.booleanPreferencesKey
 import androidx.datastore.preferences.core.floatPreferencesKey
 import androidx.datastore.preferences.core.stringPreferencesKey
+import androidx.datastore.preferences.core.longPreferencesKey
 import androidx.datastore.preferences.core.edit
 import androidx.datastore.preferences.preferencesDataStore
 import dev.theolm.freestyle_libre_alarm.domain.model.AppSettings
@@ -22,6 +23,7 @@ class SettingsDataStore(private val context: Context) {
         val LOW_GLUCOSE_ENABLED = booleanPreferencesKey("low_glucose_enabled")
         val HIGH_GLUCOSE_ENABLED = booleanPreferencesKey("high_glucose_enabled")
         val DARK_MODE_ENABLED = booleanPreferencesKey("dark_mode_enabled")
+        val SNOOZE_END_TIME = longPreferencesKey("snooze_end_time")
     }
 
     val settings: Flow<AppSettings> = context.dataStore.data.map { preferences ->
@@ -30,7 +32,8 @@ class SettingsDataStore(private val context: Context) {
             librePackageName = preferences[Keys.LIBRE_PACKAGE_NAME] ?: "com.freestylelibre.app",
             isLowGlucoseEnabled = preferences[Keys.LOW_GLUCOSE_ENABLED] ?: true,
             isHighGlucoseEnabled = preferences[Keys.HIGH_GLUCOSE_ENABLED] ?: true,
-            isDarkModeEnabled = preferences[Keys.DARK_MODE_ENABLED] ?: false
+            isDarkModeEnabled = preferences[Keys.DARK_MODE_ENABLED] ?: false,
+            snoozeEndTime = preferences[Keys.SNOOZE_END_TIME] ?: 0L
         )
     }
 
@@ -61,6 +64,12 @@ class SettingsDataStore(private val context: Context) {
     suspend fun updateDarkModeEnabled(enabled: Boolean) {
         context.dataStore.edit { preferences ->
             preferences[Keys.DARK_MODE_ENABLED] = enabled
+        }
+    }
+
+    suspend fun updateSnoozeEndTime(endTime: Long) {
+        context.dataStore.edit { preferences ->
+            preferences[Keys.SNOOZE_END_TIME] = endTime
         }
     }
 }
