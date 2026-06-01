@@ -1,12 +1,22 @@
 # FreeStyle Libre Alarm
 
-An Android companion alarm app for Abbott FreeStyle Libre CGM users who need louder, more disruptive glucose alerts.
+Your FreeStyle Libre notifications are too quiet. This app turns them into a **real alarm** — full volume, full screen, impossible to miss.
 
-## What it does
+Built for my friend **Mathias**, who kept missing low-glucose alerts while sleeping. A quiet notification at 3 AM can be dangerous. This app fixes that.
 
-The official FreeStyle Libre app posts notifications when your blood glucose goes too low or too high, but those notifications can be quiet and easy to miss — especially while sleeping.
+## The Problem
 
-**FreeStyle Libre Alarm** listens for notifications from the FreeStyle Libre app and triggers a **full-screen alarm** with maximum volume sound and strong vibration, ensuring you never miss a critical glucose warning.
+The official FreeStyle Libre app sends notifications when your glucose is too low or too high. But notifications are easy to miss — especially when you're asleep. A low-glucose event during the night can go unnoticed for hours.
+
+## The Solution
+
+**FreeStyle Libre Alarm** listens for every notification from the FreeStyle Libre app and immediately triggers a **full-screen alarm** with:
+
+- Maximum volume sound
+- Strong vibration
+- Screen wake-up, even through the lock screen
+
+It turns a silent notification into an alarm you **cannot sleep through**.
 
 ## Features
 
@@ -34,7 +44,7 @@ The official FreeStyle Libre app posts notifications when your blood glucose goe
 
 > **Note:** After rebooting your device, you may need to manually re-grant notification access for security reasons.
 
-## How it works
+## How It Works
 
 The app uses Android's `NotificationListenerService` to monitor all notifications. When it detects a notification from the FreeStyle Libre app, it immediately triggers a high-priority alarm activity that:
 
@@ -53,7 +63,7 @@ The app uses Android's `NotificationListenerService` to monitor all notification
 - **Min SDK:** 24 (Android 7.0)
 - **Target/Compile SDK:** 36 (Android 16)
 
-## Building from source
+## Building from Source
 
 ```bash
 # Clone the repository
@@ -67,7 +77,7 @@ cd FreeStyle-Libre-Alarm
 The generated APK will be located at:
 `app/build/outputs/apk/debug/app-debug.apk`
 
-## Important notes
+## Important Notes
 
 - This app triggers an alarm on **any notification** posted by the FreeStyle Libre app. It does not distinguish between low glucose, high glucose, or informational notifications.
 - This is a companion app and does not replace the official FreeStyle Libre application. You must have the official app installed and running.
