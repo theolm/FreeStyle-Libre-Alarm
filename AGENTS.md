@@ -61,3 +61,22 @@ Default canonical labels (`needs-triage`, `needs-info`, `ready-for-agent`, `read
 ### Domain docs
 
 Single-context layout (`CONTEXT.md` + `docs/adr/` at repo root). See `docs/agents/domain.md`.
+
+## Agent Constraints
+
+### Git Operations Require Explicit Permission
+
+**NEVER** execute any git command that modifies the repository without explicit user permission. This includes but is not limited to:
+- `git commit`
+- `git push`
+- `git tag`
+- `git commit --amend`
+- `git rebase`
+- `git merge`
+- `git cherry-pick`
+- `git revert`
+- `git reset`
+- `git checkout` (when switching branches)
+- Any other operation that modifies the working tree, index, or refs
+
+**Always ask** before running git commands. The user must explicitly approve each git operation.
