@@ -22,6 +22,20 @@ jobs:
         run: |
           echo "${{ secrets.KEYSTORE }}" | base64 -d > app/release.keystore
 
+      - name: Debug Keystore Location
+        run: |
+          echo "Current directory: $(pwd)"
+          echo "---"
+          echo "Files in project root:"
+          ls -la
+          echo "---"
+          echo "Files in app/ directory:"
+          ls -la app/
+          echo "---"
+          echo "Keystore file details:"
+          file app/release.keystore || echo "Keystore NOT FOUND in app/"
+          ls -la app/release.keystore || echo ""
+
       - name: Build Release APK
         env:
           KEYSTORE_PATH: app/release.keystore
