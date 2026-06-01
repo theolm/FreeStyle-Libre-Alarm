@@ -94,10 +94,6 @@ fun DownloadProgressDialog(
                         modifier = Modifier.fillMaxWidth()
                     )
                 } else {
-                    CircularProgressIndicator(
-                        modifier = Modifier.height(48.dp)
-                    )
-                    Spacer(modifier = Modifier.height(16.dp))
                     LinearProgressIndicator(
                         modifier = Modifier.fillMaxWidth()
                     )
