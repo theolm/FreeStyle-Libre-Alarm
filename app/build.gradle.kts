@@ -3,6 +3,24 @@ plugins {
     alias(libs.plugins.kotlin.compose)
     alias(libs.plugins.ksp)
     alias(libs.plugins.kotlin.serialization)
+    alias(libs.plugins.detekt)
+}
+
+detekt {
+    config.from(rootProject.files("detekt.yml"))
+    baseline = rootProject.file("detekt-baseline.xml")
+    buildUponDefaultConfig = true
+    parallel = true
+}
+
+tasks.withType<io.gitlab.arturbosch.detekt.Detekt>().configureEach {
+    exclude("**/build/**")
+    exclude("**/resources/**")
+    exclude("**/tmp/**")
+}
+
+tasks.named("check") {
+    dependsOn(tasks.named("detekt"))
 }
 
 android {

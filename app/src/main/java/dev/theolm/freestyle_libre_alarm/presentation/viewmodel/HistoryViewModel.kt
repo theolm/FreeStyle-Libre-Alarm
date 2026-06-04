@@ -21,17 +21,11 @@ class HistoryViewModel(
             initialValue = emptyList()
         )
 
-    fun clearAlerts() {
-        viewModelScope.launch {
-            glucoseAlertRepository.clearAllAlerts()
-        }
-    }
-
     class Factory(
         private val glucoseAlertRepository: GlucoseAlertRepository
     ) : ViewModelProvider.Factory {
         @Suppress("UNCHECKED_CAST")
-        override fun <T : androidx.lifecycle.ViewModel> create(modelClass: Class<T>): T {
+        override fun <T : ViewModel> create(modelClass: Class<T>): T {
             return HistoryViewModel(glucoseAlertRepository) as T
         }
     }

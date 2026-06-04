@@ -8,13 +8,13 @@ import dev.theolm.freestyle_libre_alarm.domain.repository.UpdateRepository
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.flow.MutableStateFlow
-import kotlinx.coroutines.flow.flowOf
 import kotlinx.coroutines.test.StandardTestDispatcher
 import kotlinx.coroutines.test.resetMain
 import kotlinx.coroutines.test.runTest
 import kotlinx.coroutines.test.setMain
 import org.junit.After
-import org.junit.Assert.*
+import org.junit.Assert.assertEquals
+import org.junit.Assert.assertTrue
 import org.junit.Before
 import org.junit.Test
 import java.io.File
@@ -184,7 +184,7 @@ class UpdateViewModelTest {
 
         override suspend fun downloadApk(url: String, onProgress: (Int) -> Unit): File {
             onProgress(50)
-            return downloadResult ?: throw IllegalStateException("No download result set")
+            return downloadResult ?: error("No download result set")
         }
 
         override fun cleanupDownloadedFile() {
@@ -198,12 +198,12 @@ class UpdateViewModelTest {
 
         override val settings = settingsFlow
 
-        override suspend fun updateAlarmEnabled(enabled: Boolean) {}
-        override suspend fun updateLibrePackageName(packageName: String) {}
-        override suspend fun updateLowGlucoseEnabled(enabled: Boolean) {}
-        override suspend fun updateHighGlucoseEnabled(enabled: Boolean) {}
-        override suspend fun updateDarkModeEnabled(enabled: Boolean) {}
-        override suspend fun updateSnoozeEndTime(endTime: Long) {}
+        override suspend fun updateAlarmEnabled(enabled: Boolean) = Unit
+        override suspend fun updateLibrePackageName(packageName: String) = Unit
+        override suspend fun updateLowGlucoseEnabled(enabled: Boolean) = Unit
+        override suspend fun updateHighGlucoseEnabled(enabled: Boolean) = Unit
+        override suspend fun updateDarkModeEnabled(enabled: Boolean) = Unit
+        override suspend fun updateSnoozeEndTime(endTime: Long) = Unit
         override suspend fun updateLastDismissedVersion(version: String?) {
             lastDismissedVersion = version
             settingsFlow.value = settingsFlow.value.copy(lastDismissedVersion = version)

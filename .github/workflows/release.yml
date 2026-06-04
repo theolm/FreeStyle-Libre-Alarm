@@ -24,6 +24,9 @@ jobs:
         run: |
           echo "${{ secrets.KEYSTORE }}" | base64 -d > app/release.keystore
 
+      - name: Run Detekt
+        run: ./gradlew detekt
+
       - name: Build Release APK
         env:
           KEYSTORE_PATH: app/release.keystore

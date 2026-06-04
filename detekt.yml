@@ -1,0 +1,72 @@
+build:
+  maxIssues: 0
+
+complexity:
+  active: true
+  ComplexCondition:
+    threshold: 4
+  LargeClass:
+    threshold: 600
+  LongMethod:
+    threshold: 65
+    ignoreAnnotated:
+      - "Composable"
+  TooManyFunctions:
+    thresholdInFiles: 11
+    thresholdInClasses: 11
+    thresholdInInterfaces: 11
+    thresholdInObjects: 11
+
+style:
+  active: true
+  MagicNumber:
+    active: false
+  ForbiddenComment:
+    active: true
+    comments:
+      - "FIXME:"
+      - "STOPSHIP:"
+      - "TODO:"
+  MaxLineLength:
+    active: true
+    maxLineLength: 200
+  UnusedPrivateMember:
+    active: true
+  UnusedImports:
+    active: true
+
+exceptions:
+  active: true
+  TooGenericExceptionCaught:
+    active: false
+
+potential-bugs:
+  active: true
+  IgnoredReturnValue:
+    active: false
+
+comments:
+  active: true
+  CommentOverPrivateFunction:
+    active: false
+  CommentOverPrivateProperty:
+    active: false
+  UndocumentedPublicClass:
+    active: false
+  UndocumentedPublicFunction:
+    active: false
+
+naming:
+  active: true
+  PackageNaming:
+    active: false
+  FunctionNaming:
+    active: true
+    ignoreAnnotated:
+      - "Composable"
+  TopLevelPropertyNaming:
+    active: true
+    constantPattern: "[A-Z][A-Za-z0-9]*"
+
+performance:
+  active: true

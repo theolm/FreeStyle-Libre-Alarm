@@ -21,8 +21,6 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.layout.Row
-import androidx.compose.foundation.layout.Spacer
-import androidx.compose.foundation.layout.width
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Warning
 import androidx.compose.material3.Button
@@ -96,7 +94,6 @@ class AlarmActivity : ComponentActivity() {
             FreeStyleLibreAlarmTheme(darkTheme = darkTheme) {
                 AlarmScreen(
                     isDarkTheme = darkTheme,
-                    onDismiss = { dismissAlarm() },
                     onSnooze = { minutes -> snoozeAlarm(minutes) }
                 )
             }
@@ -121,11 +118,6 @@ class AlarmActivity : ComponentActivity() {
                 IntentFilter(AlarmManager.ACTION_DISMISS_ALARM)
             )
         }
-    }
-
-    private fun dismissAlarm() {
-        AlarmManager.stopAlarm()
-        finish()
     }
 
     private fun snoozeAlarm(minutes: Int) {
@@ -158,7 +150,6 @@ class AlarmActivity : ComponentActivity() {
 @Composable
 fun AlarmScreen(
     isDarkTheme: Boolean,
-    onDismiss: () -> Unit,
     onSnooze: (Int) -> Unit
 ) {
     Box(

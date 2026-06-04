@@ -1,9 +1,10 @@
 package dev.theolm.freestyle_libre_alarm.data.repository
 
-import dev.theolm.freestyle_libre_alarm.domain.model.UpdateInfo
 import dev.theolm.freestyle_libre_alarm.domain.util.SemVerParser
-import kotlinx.coroutines.test.runTest
-import org.junit.Assert.*
+import org.junit.Assert.assertEquals
+import org.junit.Assert.assertFalse
+import org.junit.Assert.assertNotNull
+import org.junit.Assert.assertTrue
 import org.junit.Test
 
 class UpdateRepositoryImplTest {

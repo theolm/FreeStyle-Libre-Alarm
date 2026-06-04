@@ -9,6 +9,7 @@ import dev.theolm.freestyle_libre_alarm.data.alarm.AlarmManager
 import dev.theolm.freestyle_libre_alarm.domain.model.GlucoseAlert
 import dev.theolm.freestyle_libre_alarm.domain.repository.GlucoseAlertRepository
 import dev.theolm.freestyle_libre_alarm.domain.repository.SettingsRepository
+import dev.theolm.freestyle_libre_alarm.presentation.di.AppModule
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.SupervisorJob
@@ -23,8 +24,8 @@ class LibreNotificationListenerService : NotificationListenerService() {
 
     override fun onCreate() {
         super.onCreate()
-        glucoseAlertRepository = dev.theolm.freestyle_libre_alarm.presentation.di.AppModule.provideGlucoseAlertRepository(this)
-        settingsRepository = dev.theolm.freestyle_libre_alarm.presentation.di.AppModule.provideSettingsRepository(this)
+        glucoseAlertRepository = AppModule.provideGlucoseAlertRepository(this)
+        settingsRepository = AppModule.provideSettingsRepository(this)
         AlarmManager.init(this)
     }
 
@@ -103,6 +104,7 @@ class LibreNotificationListenerService : NotificationListenerService() {
         )
     }
 
+    @Suppress("ReturnCount")
     private fun parseGlucoseData(text: String?): Pair<Int?, String?> {
         if (text.isNullOrBlank()) return null to null
 

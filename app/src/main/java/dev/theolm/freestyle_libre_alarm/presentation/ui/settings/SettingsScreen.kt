@@ -3,7 +3,6 @@ package dev.theolm.freestyle_libre_alarm.presentation.ui.settings
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
-import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
@@ -229,7 +228,8 @@ fun SettingsScreen() {
                                 verticalAlignment = Alignment.CenterVertically
                             ) {
                                 Text(
-                                    text = "Nova versão disponível: ${(updateState as UpdateUiState.UpdateAvailable).updateInfo.version}",
+                                    text = "Nova versão disponível: " +
+                                            "${(updateState as UpdateUiState.UpdateAvailable).updateInfo.version}",
                                     style = MaterialTheme.typography.bodyLarge,
                                     color = MaterialTheme.colorScheme.primary
                                 )
