@@ -47,7 +47,13 @@
         <service
             android:name=".data.service.AlarmForegroundService"
             android:exported="false"
-            android:foregroundServiceType="specialUse" />
+            android:description="@string/alarm_foreground_service_description"
+            android:foregroundServiceType="specialUse">
+
+            <meta-data
+                android:name="android.app.PROPERTY_SPECIAL_USE_FGS_SUBTYPE"
+                android:resource="@xml/foreground_service_types" />
+        </service>
 
         <service
             android:name=".data.service.LibreNotificationListenerService"
