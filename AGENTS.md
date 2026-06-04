@@ -1,5 +1,7 @@
 # Agent Notes
 
+When reporting information to me, be extremely concise and sacrifice grammar for the sake of concision
+
 ## Project Overview
 Single-module Android app (Gradle + Kotlin) that acts as a companion alarm for Abbott FreeStyle Libre CGM users. Monitors notifications from the official FreeStyle Libre app and triggers full-screen alarms with sound/vibration.
 
@@ -9,8 +11,10 @@ Single-module Android app (Gradle + Kotlin) that acts as a companion alarm for A
 - **DI:** Manual via `AppModule.kt` (no Hilt/Dagger)
 - **UI:** Jetpack Compose + Material 3 + Navigation Compose
 - **Design reference:** `@DESIGN.md` for app UI design decisions and conventions
-- **DB:** Room (KSP codegen) with single entity `AlarmEventEntity`
+- **DB:** Room (KSP codegen) with 2 entities (`AlarmEventEntity`, `NotificationLogEntity`), version 2, `fallbackToDestructiveMigration(true)`
 - **Prefs:** Jetpack DataStore
+- **Logging:** `AppLogger` (Kermit wrapper, tag `FreeStyleLibreAlarm`, min severity Debug)
+- **Updates:** In-app updater checks GitHub releases, downloads APK, installs via intent (`REQUEST_INSTALL_PACKAGES` permission)
 
 ## Key Entrypoints
 - `MainActivity.kt` — Compose UI root with 3 screens (Monitoring, History, Settings)
@@ -19,34 +23,20 @@ Single-module Android app (Gradle + Kotlin) that acts as a companion alarm for A
 - `AlarmActivity` — Full-screen alarm UI launched over lock screen
 - `AlarmManager` — Handles sound, vibration, wake lock, and notification
 - `BootReceiver` — Restarts foreground service on boot
-
-## Critical Behavior
-- **Any** notification from the FreeStyle Libre app triggers the alarm. The app does **not** parse notification content to distinguish low/high glucose vs. informational messages.
-- Alarm forces `STREAM_ALARM` to max volume, acquires a wake lock, and launches a full-screen intent.
-- UI strings are in **Portuguese** (e.g., "Alerta de Glicose", "Desligar Alarme").
-
-## Build & Development
-- **Min SDK:** 24 | **Target/Compile SDK:** 36
-- **Java compatibility:** 11
-- Standard Gradle wrapper: `./gradlew assembleDebug` / `./gradlew assembleRelease`
-- KSP is required for Room; run builds before expecting generated code in IDE.
-- No custom lint, typecheck, or formatter tasks configured.
-
-## Permissions (Require Runtime/Settings Grants)
-- `BIND_NOTIFICATION_LISTENER_SERVICE` — User must manually enable in system settings. Cannot be granted programmatically.
-- `POST_NOTIFICATIONS` — Runtime permission on Android 13+.
-- After reboot, notification listener access may need to be re-enabled manually for security reasons (despite `BootReceiver`).
-
-## Testing
-- Only example tests exist (`ExampleUnitTest`, `ExampleInstrumentedTest`).
-- No actual test coverage for alarm logic, notification parsing, or DB operations.
-- Instrumented tests require an Android device/emulator.
+- `AlarmDismissReceiver` — Broadcast receiver that stops alarm and triggers 10-min snooze (used from notification action)
+- In-app updater (`UpdateRepositoryImpl`, `UpdateViewModel`) — Checks GitHub releases, downloads APK, installs via intent
 
 ## Gotchas
 - `LibreConstants.FREESTYLE_LIBRE_PACKAGE` defaults to `com.freestylelibre.app`. Settings allow overriding this for regional app variants.
 - `AlarmManager.stopAlarm()` must be called to release the wake lock and stop ringtone; missing this causes resource leaks.
 - The app uses `enableEdgeToEdge()` in `MainActivity`.
 - Room schema export is disabled (`exportSchema = false`).
+- `LibreNotificationListenerService` hardcodes `com.freestylelibre.app.br` as the target package, ignoring both `LibreConstants` and the DataStore override.
+- `enableEdgeToEdge()` is used in both `MainActivity` and `AlarmActivity`.
+- Snooze system: dismiss sets `snoozeEndTime` in DataStore; listener service checks before triggering.
+- All FreeStyle Libre notifications are logged to DB regardless of alarm state.
+- `AlarmDismissReceiver` uses `GlobalScope` (marked with `@OptIn(DelicateCoroutinesApi::class)`).
+- New permissions: `INTERNET`, `REQUEST_INSTALL_PACKAGES`.
 
 ## Agent skills
 

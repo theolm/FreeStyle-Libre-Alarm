@@ -51,6 +51,10 @@ object AlarmManager {
             throw IllegalStateException("AlarmManager not initialized. Call init() first.")
         }
 
+        if (_isAlarmPlaying.value) return
+
+        stopVibration()
+
         // Acquire wake lock
         wakeLock?.acquire(60 * 1000L)
 
@@ -75,9 +79,13 @@ object AlarmManager {
             release()
         }
         mediaPlayer = null
-        wakeLock?.release()
-        cancelAlarmNotification()
+        try {
+            wakeLock?.release()
+        } catch (_: RuntimeException) {
+            // Wake lock may have already timed out or been released
+        }
         stopVibration()
+        cancelAlarmNotification()
         _isAlarmPlaying.value = false
     }
 
