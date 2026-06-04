@@ -25,11 +25,7 @@ tasks.named("check") {
 
 android {
     namespace = "dev.theolm.freestyle_libre_alarm"
-    compileSdk {
-        version = release(36) {
-            minorApiLevel = 1
-        }
-    }
+    compileSdk = 37
 
     defaultConfig {
         applicationId = "dev.theolm.freestyle_libre_alarm"
