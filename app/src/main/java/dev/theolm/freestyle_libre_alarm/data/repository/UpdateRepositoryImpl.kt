@@ -16,7 +16,6 @@ import io.ktor.client.request.get
 import io.ktor.client.statement.HttpResponse
 import io.ktor.http.contentLength
 import io.ktor.serialization.kotlinx.json.json
-import io.ktor.utils.io.ByteReadChannel
 
 import kotlinx.serialization.json.Json
 import java.io.File
@@ -38,6 +37,7 @@ class UpdateRepositoryImpl(
 
     private var downloadedFile: File? = null
 
+    @Suppress("ReturnCount")
     override suspend fun checkForUpdate(currentVersion: String): CheckUpdateResult {
         logger.d { "Checking for update. Current version: $currentVersion" }
         
@@ -55,7 +55,8 @@ class UpdateRepositoryImpl(
             }
 
             val release: GitHubReleaseDto = response.body()
-            logger.d { "GitHub release: tag=${release.tagName}, prerelease=${release.prerelease}, assets=${release.assets.size}" }
+            logger.d { "GitHub release: tag=${release.tagName}, prerelease=${release.prerelease}, " +
+                "assets=${release.assets.size}" }
 
             if (release.prerelease) {
                 logger.d { "Ignoring prerelease version: ${release.tagName}" }
@@ -109,7 +110,7 @@ class UpdateRepositoryImpl(
             logger.d { "Download response status: ${response.status}" }
 
             if (response.status.value !in 200..299) {
-                throw IllegalStateException("Download failed with status: ${response.status}")
+                error("Download failed with status: ${response.status}")
             }
 
             val contentLength = response.contentLength()
@@ -119,7 +120,7 @@ class UpdateRepositoryImpl(
             logger.d { "Downloaded ${bodyBytes.size} bytes" }
 
             if (bodyBytes.isEmpty()) {
-                throw IllegalStateException("Downloaded file is empty")
+                error("Downloaded file is empty")
             }
 
             file.writeBytes(bodyBytes)
@@ -131,7 +132,7 @@ class UpdateRepositoryImpl(
             logger.d { "Downloaded ${bodyBytes.size} bytes" }
 
             if (bodyBytes.isEmpty()) {
-                throw IllegalStateException("Downloaded file is empty")
+                error("Downloaded file is empty")
             }
 
             if (contentLength != null && bodyBytes.size.toLong() != contentLength) {
@@ -157,7 +158,9 @@ class UpdateRepositoryImpl(
         downloadedFile = null
     }
 
-    private fun findApkAsset(assets: List<dev.theolm.freestyle_libre_alarm.data.remote.dto.ReleaseAssetDto>): dev.theolm.freestyle_libre_alarm.data.remote.dto.ReleaseAssetDto? {
+    private fun findApkAsset(
+        assets: List<dev.theolm.freestyle_libre_alarm.data.remote.dto.ReleaseAssetDto>
+    ): dev.theolm.freestyle_libre_alarm.data.remote.dto.ReleaseAssetDto? {
         val apkAsset = assets.find { it.contentType == APK_CONTENT_TYPE }
             ?: assets.find { it.name.endsWith(".apk", ignoreCase = true) }
         

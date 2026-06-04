@@ -130,7 +130,8 @@ fun MonitoringScreen() {
                         )
                         Spacer(modifier = Modifier.height(8.dp))
                         Text(
-                            text = "O app precisa acessar suas notifica\u00e7\u00f5es para registrar e analisar os alertas do FreeStyle Libre.",
+                            text = "O app precisa acessar suas notifica\u00e7\u00f5es " +
+                                    "para registrar e analisar os alertas do FreeStyle Libre.",
                             style = MaterialTheme.typography.bodyLarge,
                             color = MaterialTheme.colorScheme.onBackground
                         )
@@ -195,13 +196,15 @@ fun MonitoringScreen() {
                     Spacer(modifier = Modifier.height(8.dp))
                     Text(
                         text = when {
-                            !isNotificationAccessEnabled -> "Ative o acesso \u00e0s notifica\u00e7\u00f5es para come\u00e7ar"
+                            !isNotificationAccessEnabled -> "Ative o acesso \u00e0s " +
+                                    "notifica\u00e7\u00f5es para come\u00e7ar"
                             uiState.settings.isAlarmEnabled -> "Alarme Ligado"
                             else -> "Alarme Desligado"
                         },
                         style = MaterialTheme.typography.bodyLarge,
                         color = when {
-                            !isNotificationAccessEnabled -> MaterialTheme.colorScheme.onSurfaceVariant.copy(alpha = 0.7f)
+                            !isNotificationAccessEnabled ->
+                                MaterialTheme.colorScheme.onSurfaceVariant.copy(alpha = 0.7f)
                             uiState.settings.isAlarmEnabled -> MaterialTheme.colorScheme.onSurfaceVariant
                             else -> MaterialTheme.colorScheme.onSurfaceVariant.copy(alpha = 0.7f)
                         }

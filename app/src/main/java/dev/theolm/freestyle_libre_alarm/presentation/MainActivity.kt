@@ -7,7 +7,6 @@ import androidx.activity.enableEdgeToEdge
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
 import androidx.core.view.WindowCompat
-import androidx.core.view.WindowInsetsControllerCompat
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.History
 import androidx.compose.material.icons.filled.Home
@@ -119,6 +118,7 @@ class MainActivity : ComponentActivity() {
 }
 
 @Composable
+@Suppress("LongParameterList")
 fun MainScreen(
     updateState: UpdateUiState = UpdateUiState.Idle,
     onDismissUpdate: () -> Unit = {},
@@ -165,7 +165,7 @@ fun MainScreen(
                 onDismiss = onDismissError
             )
         }
-        else -> { }
+        else -> Unit
     }
 
     Scaffold(

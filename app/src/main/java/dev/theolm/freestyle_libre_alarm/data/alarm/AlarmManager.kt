@@ -48,7 +48,7 @@ object AlarmManager {
 
     fun triggerAlarm() {
         if (!isInitialized) {
-            throw IllegalStateException("AlarmManager not initialized. Call init() first.")
+            error("AlarmManager not initialized. Call init() first.")
         }
 
         if (_isAlarmPlaying.value) return
