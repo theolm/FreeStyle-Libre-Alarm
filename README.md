@@ -2,7 +2,7 @@
 
 Your FreeStyle Libre notifications are too quiet. This app turns them into a **real alarm** — full volume, full screen, impossible to miss.
 
-Built for my friend **Mathias**, who kept missing low-glucose alerts while sleeping. A quiet notification at 3 AM can be dangerous. This app fixes that.
+Built for my friend **Matthias**, who kept missing low-glucose alerts while sleeping. A quiet notification at 3 AM can be dangerous. This app fixes that.
 
 ## The Problem
 
