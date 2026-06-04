@@ -30,6 +30,7 @@ object AlarmManager {
     private val _isAlarmPlaying = MutableStateFlow(false)
     val isAlarmPlaying: StateFlow<Boolean> = _isAlarmPlaying.asStateFlow()
 
+    @Suppress("DEPRECATION")
     private val wakeLock: PowerManager.WakeLock? by lazy {
         val powerManager = appContext.getSystemService(Context.POWER_SERVICE) as PowerManager
         powerManager.newWakeLock(
@@ -116,6 +117,7 @@ object AlarmManager {
 
     private var vibrator: Vibrator? = null
 
+    @Suppress("DEPRECATION")
     private fun vibrate() {
         when {
             Build.VERSION.SDK_INT >= Build.VERSION_CODES.S -> {

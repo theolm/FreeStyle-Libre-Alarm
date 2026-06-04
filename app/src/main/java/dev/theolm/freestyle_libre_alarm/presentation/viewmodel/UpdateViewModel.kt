@@ -2,8 +2,8 @@ package dev.theolm.freestyle_libre_alarm.presentation.viewmodel
 
 import android.content.Context
 import android.content.Intent
-import android.net.Uri
 import android.os.Build
+import androidx.core.net.toUri
 import android.provider.Settings
 import androidx.core.content.FileProvider
 import androidx.lifecycle.ViewModel
@@ -160,7 +160,7 @@ class UpdateViewModel(
         logger.d { "Requesting install permission" }
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
             val intent = Intent(Settings.ACTION_MANAGE_UNKNOWN_APP_SOURCES).apply {
-                data = Uri.parse("package:${context.packageName}")
+                data = "package:${context.packageName}".toUri()
                 flags = Intent.FLAG_ACTIVITY_NEW_TASK
             }
             context.startActivity(intent)
@@ -187,15 +187,11 @@ class UpdateViewModel(
         try {
             val intent = Intent(Intent.ACTION_VIEW).apply {
                 flags = Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_GRANT_READ_URI_PERMISSION
-                val uri = if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
-                    FileProvider.getUriForFile(
-                        context,
-                        "${context.packageName}.fileprovider",
-                        file
-                    )
-                } else {
-                    Uri.fromFile(file)
-                }
+                val uri = FileProvider.getUriForFile(
+                    context,
+                    "${context.packageName}.fileprovider",
+                    file
+                )
                 logger.d { "APK URI: $uri" }
                 setDataAndType(uri, "application/vnd.android.package-archive")
             }
