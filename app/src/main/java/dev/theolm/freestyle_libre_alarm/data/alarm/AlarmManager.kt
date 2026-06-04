@@ -177,14 +177,14 @@ object AlarmManager {
 
         val notification = NotificationCompat.Builder(appContext, ALARM_CHANNEL_ID)
             .setSmallIcon(R.drawable.ic_launcher_foreground)
-            .setContentTitle("Alarme de Glicose")
-            .setContentText("Toque para desligar o alarme")
+            .setContentTitle(appContext.getString(R.string.alarm_notification_title))
+            .setContentText(appContext.getString(R.string.alarm_notification_text))
             .setPriority(NotificationCompat.PRIORITY_MAX)
             .setCategory(NotificationCompat.CATEGORY_ALARM)
             .setOngoing(true)
             .setAutoCancel(false)
             .setContentIntent(alarmPendingIntent)
-            .addAction(R.drawable.ic_launcher_foreground, "Desligar", dismissPendingIntent)
+            .addAction(R.drawable.ic_launcher_foreground, appContext.getString(R.string.alarm_notification_action), dismissPendingIntent)
             .build()
 
         notificationManager.notify(ALARM_NOTIFICATION_ID, notification)
@@ -200,10 +200,10 @@ object AlarmManager {
             val notificationManager = appContext.getSystemService(Context.NOTIFICATION_SERVICE) as NotificationManager
             val channel = NotificationChannel(
                 ALARM_CHANNEL_ID,
-                "Alarmes do FreeStyle Libre",
+                appContext.getString(R.string.alarm_channel_name),
                 NotificationManager.IMPORTANCE_HIGH
             ).apply {
-                description = "Canal para alarmes de glicose do FreeStyle Libre"
+                description = appContext.getString(R.string.alarm_channel_description)
                 setBypassDnd(true)
                 lockscreenVisibility = NotificationCompat.VISIBILITY_PUBLIC
             }

@@ -33,10 +33,10 @@ class AlarmForegroundService : Service() {
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
             val channel = NotificationChannel(
                 SERVICE_CHANNEL_ID,
-                "Serviço de Monitoramento",
+                getString(R.string.service_channel_name),
                 NotificationManager.IMPORTANCE_LOW
             ).apply {
-                description = "Mantém o monitoramento do FreeStyle Libre ativo"
+                description = getString(R.string.service_channel_description)
             }
             val notificationManager = getSystemService(Context.NOTIFICATION_SERVICE) as NotificationManager
             notificationManager.createNotificationChannel(channel)
@@ -52,8 +52,8 @@ class AlarmForegroundService : Service() {
         )
 
         return NotificationCompat.Builder(this, SERVICE_CHANNEL_ID)
-            .setContentTitle("Monitoramento Ativo")
-            .setContentText("Monitorando notificações do FreeStyle Libre")
+            .setContentTitle(getString(R.string.service_notification_title))
+            .setContentText(getString(R.string.service_notification_text))
             .setSmallIcon(R.drawable.ic_launcher_foreground)
             .setContentIntent(pendingIntent)
             .setOngoing(true)

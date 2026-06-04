@@ -1,4 +1,91 @@
 <resources>
     <string name="app_name">Matthias Vive</string>
-    <string name="alarm_foreground_service_description">Executa o serviço de alarme em primeiro plano para garantir que o alarme do FreeStyle Libre toque mesmo quando o app está em segundo plano.</string>
+
+    <!-- Navigation -->
+    <string name="nav_home">Home</string>
+    <string name="nav_history">History</string>
+    <string name="nav_settings">Settings</string>
+
+    <!-- Monitoring Screen -->
+    <string name="monitoring_title">Monitoring</string>
+    <string name="warning_icon_description">Warning</string>
+    <string name="notification_access_required">Notification Access Required</string>
+    <string name="notification_access_description">The app needs to access your notifications to record and analyze FreeStyle Libre alerts.</string>
+    <string name="open_settings">Open Settings</string>
+    <string name="alarm_title">Alarm</string>
+    <string name="alarm_status_enable_access">Enable notification access to start</string>
+    <string name="alarm_status_on">Alarm On</string>
+    <string name="alarm_status_off">Alarm Off</string>
+    <string name="stop_alarm">Stop Alarm</string>
+    <string name="test_alarm">Test Alarm</string>
+
+    <!-- History Screen -->
+    <string name="history_title">History</string>
+    <string name="no_alerts_recorded">No alerts recorded</string>
+    <string name="badge_high">High</string>
+    <string name="badge_low">Low</string>
+
+    <!-- Alarm Screen -->
+    <string name="alert_icon_description">Alert</string>
+    <string name="glucose_alert_title">Glucose Alert</string>
+    <string name="dismiss_alarm">Dismiss Alarm</string>
+    <string name="snooze_label">Snooze for:</string>
+
+    <!-- Settings Screen -->
+    <string name="settings_title">Settings</string>
+    <string name="monitoring_types">Monitoring Types</string>
+    <string name="monitor_low_glucose">Monitor Low Glucose</string>
+    <string name="monitor_high_glucose">Monitor High Glucose</string>
+    <string name="appearance">Appearance</string>
+    <string name="dark_mode">Dark Mode</string>
+    <string name="update_section">Update</string>
+    <string name="checking">Checking…</string>
+    <string name="new_version_available">New version available: %1$s</string>
+    <string name="update_now">Update Now</string>
+    <string name="downloading_progress">Downloading… %1$d%%</string>
+    <string name="app_up_to_date">App is up to date</string>
+    <string name="check">Check</string>
+    <string name="try_again">Try Again</string>
+    <string name="download_complete_exclamation">Download complete!</string>
+    <string name="install_now">Install Now</string>
+    <string name="permission_required_for_updates">Permission required to install updates</string>
+    <string name="open_settings_short">Open Settings</string>
+    <string name="current_version">Current version: %1$s</string>
+
+    <!-- Update Dialogs -->
+    <string name="new_version_dialog_title">New version available</string>
+    <string name="version_label">Version %1$s</string>
+    <string name="new_version_available_body">A new version is available</string>
+    <string name="update">Update</string>
+    <string name="later">Later</string>
+    <string name="downloading_update">Downloading update</string>
+    <string name="please_wait">Please wait…</string>
+    <string name="cancel">Cancel</string>
+    <string name="error_title">Error</string>
+    <string name="ok">OK</string>
+    <string name="permission_required_title">Permission Required</string>
+    <string name="install_permission_description">To install updates, you need to allow installation from unknown sources.</string>
+    <string name="download_complete_title">Download complete</string>
+    <string name="download_complete_body">The update was downloaded successfully. Do you want to install it now?</string>
+
+    <!-- Error Messages -->
+    <string name="error_download_failed">Failed to download update. Please try again later.</string>
+    <string name="error_install_failed">Error starting installation: %1$s</string>
+    <string name="error_install_file_not_found">Installation file not found. Please download again.</string>
+    <string name="error_update_check">Error %1$d: Could not check for updates</string>
+    <string name="error_update_network">Could not check for updates. Please check your connection and try again.</string>
+
+    <!-- Alarm Manager -->
+    <string name="alarm_notification_title">Glucose Alarm</string>
+    <string name="alarm_notification_text">Tap to dismiss the alarm</string>
+    <string name="alarm_notification_action">Dismiss</string>
+    <string name="alarm_channel_name">FreeStyle Libre Alarms</string>
+    <string name="alarm_channel_description">Channel for FreeStyle Libre glucose alarms</string>
+
+    <!-- Foreground Service -->
+    <string name="service_channel_name">Monitoring Service</string>
+    <string name="service_channel_description">Keeps FreeStyle Libre monitoring active</string>
+    <string name="service_notification_title">Monitoring Active</string>
+    <string name="service_notification_text">Monitoring FreeStyle Libre notifications</string>
+    <string name="alarm_foreground_service_description">Runs the alarm foreground service to ensure FreeStyle Libre alarms sound even when the app is in the background.</string>
 </resources>
