@@ -106,17 +106,16 @@ class AlarmActivity : ComponentActivity() {
     }
 
     private fun registerDismissReceiver() {
+        val intentFilter = IntentFilter(AlarmManager.ACTION_DISMISS_ALARM)
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
             registerReceiver(
                 dismissReceiver,
-                IntentFilter(AlarmManager.ACTION_DISMISS_ALARM),
-                Context.RECEIVER_NOT_EXPORTED
+                intentFilter,
+                RECEIVER_NOT_EXPORTED
             )
         } else {
-            registerReceiver(
-                dismissReceiver,
-                IntentFilter(AlarmManager.ACTION_DISMISS_ALARM)
-            )
+            @Suppress("UnspecifiedRegisterReceiverFlag")
+            registerReceiver(dismissReceiver, intentFilter)
         }
     }
 
@@ -133,6 +132,7 @@ class AlarmActivity : ComponentActivity() {
         finish()
     }
 
+    @Suppress("DEPRECATION")
     private fun showOnLockScreen() {
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O_MR1) {
             setShowWhenLocked(true)

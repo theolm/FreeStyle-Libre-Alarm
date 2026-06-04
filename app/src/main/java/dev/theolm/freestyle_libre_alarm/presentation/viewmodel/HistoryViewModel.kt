@@ -8,10 +8,9 @@ import dev.theolm.freestyle_libre_alarm.domain.repository.GlucoseAlertRepository
 import kotlinx.coroutines.flow.SharingStarted
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.stateIn
-import kotlinx.coroutines.launch
 
 class HistoryViewModel(
-    private val glucoseAlertRepository: GlucoseAlertRepository
+    glucoseAlertRepository: GlucoseAlertRepository
 ) : ViewModel() {
 
     val glucoseAlerts: StateFlow<List<GlucoseAlert>> = glucoseAlertRepository.getAllAlerts()
