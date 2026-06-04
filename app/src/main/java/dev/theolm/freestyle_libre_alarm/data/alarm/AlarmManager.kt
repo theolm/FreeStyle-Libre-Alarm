@@ -34,7 +34,7 @@ object AlarmManager {
     private val wakeLock: PowerManager.WakeLock? by lazy {
         val powerManager = appContext.getSystemService(Context.POWER_SERVICE) as PowerManager
         powerManager.newWakeLock(
-            PowerManager.PARTIAL_WAKE_LOCK or PowerManager.ACQUIRE_CAUSES_WAKEUP,
+            PowerManager.SCREEN_BRIGHT_WAKE_LOCK or PowerManager.ACQUIRE_CAUSES_WAKEUP,
             "FreeStyleLibreAlarm::AlarmWakeLock"
         )
     }

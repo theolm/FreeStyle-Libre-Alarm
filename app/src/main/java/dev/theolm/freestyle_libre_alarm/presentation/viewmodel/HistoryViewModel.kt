@@ -10,7 +10,7 @@ import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.stateIn
 
 class HistoryViewModel(
-    private val glucoseAlertRepository: GlucoseAlertRepository
+    glucoseAlertRepository: GlucoseAlertRepository
 ) : ViewModel() {
 
     val glucoseAlerts: StateFlow<List<GlucoseAlert>> = glucoseAlertRepository.getAllAlerts()

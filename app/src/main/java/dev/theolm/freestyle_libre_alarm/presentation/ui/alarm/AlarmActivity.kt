@@ -106,17 +106,16 @@ class AlarmActivity : ComponentActivity() {
     }
 
     private fun registerDismissReceiver() {
+        val intentFilter = IntentFilter(AlarmManager.ACTION_DISMISS_ALARM)
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
             registerReceiver(
                 dismissReceiver,
-                IntentFilter(AlarmManager.ACTION_DISMISS_ALARM),
+                intentFilter,
                 Context.RECEIVER_NOT_EXPORTED
             )
         } else {
-            registerReceiver(
-                dismissReceiver,
-                IntentFilter(AlarmManager.ACTION_DISMISS_ALARM)
-            )
+            @Suppress("UnspecifiedRegisterReceiverFlag")
+            registerReceiver(dismissReceiver, intentFilter)
         }
     }
 
