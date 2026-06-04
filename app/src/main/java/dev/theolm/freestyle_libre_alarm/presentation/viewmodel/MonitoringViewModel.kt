@@ -6,8 +6,6 @@ import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.viewModelScope
 import dev.theolm.freestyle_libre_alarm.data.alarm.AlarmManager
 import dev.theolm.freestyle_libre_alarm.domain.model.AppSettings
-import dev.theolm.freestyle_libre_alarm.domain.model.LibreNotification
-import dev.theolm.freestyle_libre_alarm.domain.repository.NotificationRepository
 import dev.theolm.freestyle_libre_alarm.domain.repository.SettingsRepository
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
@@ -17,8 +15,7 @@ import kotlinx.coroutines.launch
 
 class MonitoringViewModel(
     private val context: Context,
-    private val settingsRepository: SettingsRepository,
-    private val notificationRepository: NotificationRepository
+    private val settingsRepository: SettingsRepository
 ) : ViewModel() {
 
     private val _uiState = MutableStateFlow(MonitoringUiState())
@@ -29,11 +26,6 @@ class MonitoringViewModel(
         viewModelScope.launch {
             settingsRepository.settings.collect { settings ->
                 _uiState.update { it.copy(settings = settings) }
-            }
-        }
-        viewModelScope.launch {
-            notificationRepository.lastNotification.collect { notification ->
-                _uiState.update { it.copy(lastNotification = notification) }
             }
         }
     }
@@ -49,18 +41,16 @@ class MonitoringViewModel(
     }
 
     data class MonitoringUiState(
-        val settings: AppSettings = AppSettings(),
-        val lastNotification: LibreNotification? = null
+        val settings: AppSettings = AppSettings()
     )
 
     class Factory(
         private val context: Context,
-        private val settingsRepository: SettingsRepository,
-        private val notificationRepository: NotificationRepository
+        private val settingsRepository: SettingsRepository
     ) : ViewModelProvider.Factory {
         @Suppress("UNCHECKED_CAST")
         override fun <T : ViewModel> create(modelClass: Class<T>): T {
-            return MonitoringViewModel(context, settingsRepository, notificationRepository) as T
+            return MonitoringViewModel(context, settingsRepository) as T
         }
     }
 }
