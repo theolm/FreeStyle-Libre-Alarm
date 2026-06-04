@@ -50,6 +50,8 @@ class LibreNotificationListenerService : NotificationListenerService() {
                 val log = createNotificationLog(sbn)
                 notificationLogRepository.insertNotificationLog(log)
 
+                if (AlarmManager.isAlarmPlaying.value) return@launch
+
                 val settings = settingsRepository.settings.first()
                 if (settings.isAlarmEnabled) {
                     // Check if snooze is active
