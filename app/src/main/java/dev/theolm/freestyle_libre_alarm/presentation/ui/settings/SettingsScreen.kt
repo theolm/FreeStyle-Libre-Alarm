@@ -26,8 +26,10 @@ import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
+import dev.theolm.freestyle_libre_alarm.R
 import androidx.lifecycle.viewmodel.compose.viewModel
 import dev.theolm.freestyle_libre_alarm.presentation.di.AppModule
 import dev.theolm.freestyle_libre_alarm.presentation.viewmodel.SettingsViewModel
@@ -57,7 +59,7 @@ fun SettingsScreen() {
             TopAppBar(
                 title = {
                     Text(
-                        text = "Configura\u00e7\u00f5es",
+                        text = stringResource(R.string.settings_title),
                         style = MaterialTheme.typography.headlineSmall,
                         fontWeight = FontWeight.Normal
                     )
@@ -89,7 +91,7 @@ fun SettingsScreen() {
                     verticalArrangement = Arrangement.spacedBy(16.dp)
                 ) {
                     Text(
-                        text = "Tipos de Monitoramento",
+                        text = stringResource(R.string.monitoring_types),
                         style = MaterialTheme.typography.titleLarge,
                         fontWeight = FontWeight.Medium,
                         color = MaterialTheme.colorScheme.onSurfaceVariant
@@ -101,7 +103,7 @@ fun SettingsScreen() {
                         verticalAlignment = Alignment.CenterVertically
                     ) {
                         Text(
-                            text = "Monitorar Glicose Baixa",
+                            text = stringResource(R.string.monitor_low_glucose),
                             style = MaterialTheme.typography.bodyLarge,
                             color = MaterialTheme.colorScheme.onSurfaceVariant
                         )
@@ -123,7 +125,7 @@ fun SettingsScreen() {
                         verticalAlignment = Alignment.CenterVertically
                     ) {
                         Text(
-                            text = "Monitorar Glicose Alta",
+                            text = stringResource(R.string.monitor_high_glucose),
                             style = MaterialTheme.typography.bodyLarge,
                             color = MaterialTheme.colorScheme.onSurfaceVariant
                         )
@@ -154,7 +156,7 @@ fun SettingsScreen() {
                     verticalArrangement = Arrangement.spacedBy(16.dp)
                 ) {
                     Text(
-                        text = "Apar\u00eancia",
+                        text = stringResource(R.string.appearance),
                         style = MaterialTheme.typography.titleLarge,
                         fontWeight = FontWeight.Medium,
                         color = MaterialTheme.colorScheme.onSurfaceVariant
@@ -166,7 +168,7 @@ fun SettingsScreen() {
                         verticalAlignment = Alignment.CenterVertically
                     ) {
                         Text(
-                            text = "Modo Escuro",
+                            text = stringResource(R.string.dark_mode),
                             style = MaterialTheme.typography.bodyLarge,
                             color = MaterialTheme.colorScheme.onSurfaceVariant
                         )
@@ -197,7 +199,7 @@ fun SettingsScreen() {
                     verticalArrangement = Arrangement.spacedBy(16.dp)
                 ) {
                     Text(
-                        text = "Atualização",
+                        text = stringResource(R.string.update_section),
                         style = MaterialTheme.typography.titleLarge,
                         fontWeight = FontWeight.Medium,
                         color = MaterialTheme.colorScheme.onSurfaceVariant
@@ -211,7 +213,7 @@ fun SettingsScreen() {
                                 verticalAlignment = Alignment.CenterVertically
                             ) {
                                 Text(
-                                    text = "Verificando...",
+                                    text = stringResource(R.string.checking),
                                     style = MaterialTheme.typography.bodyLarge,
                                     color = MaterialTheme.colorScheme.onSurfaceVariant
                                 )
@@ -228,8 +230,10 @@ fun SettingsScreen() {
                                 verticalAlignment = Alignment.CenterVertically
                             ) {
                                 Text(
-                                    text = "Nova versão disponível: " +
-                                            "${(updateState as UpdateUiState.UpdateAvailable).updateInfo.version}",
+                                    text = stringResource(
+                                        R.string.new_version_available,
+                                        (updateState as UpdateUiState.UpdateAvailable).updateInfo.version
+                                    ),
                                     style = MaterialTheme.typography.bodyLarge,
                                     color = MaterialTheme.colorScheme.primary
                                 )
@@ -238,7 +242,7 @@ fun SettingsScreen() {
                                 onClick = { updateViewModel.downloadUpdate() },
                                 modifier = Modifier.fillMaxWidth()
                             ) {
-                                Text("Atualizar agora")
+                                Text(stringResource(R.string.update_now))
                             }
                         }
                         is UpdateUiState.Downloading -> {
@@ -247,7 +251,10 @@ fun SettingsScreen() {
                                 verticalArrangement = Arrangement.spacedBy(8.dp)
                             ) {
                                 Text(
-                                    text = "Baixando... ${(updateState as UpdateUiState.Downloading).progress}%",
+                                    text = stringResource(
+                                        R.string.downloading_progress,
+                                        (updateState as UpdateUiState.Downloading).progress
+                                    ),
                                     style = MaterialTheme.typography.bodyLarge,
                                     color = MaterialTheme.colorScheme.onSurfaceVariant
                                 )
@@ -260,22 +267,31 @@ fun SettingsScreen() {
                                 verticalAlignment = Alignment.CenterVertically
                             ) {
                                 Text(
-                                    text = "O app está atualizado",
+                                    text = stringResource(R.string.app_up_to_date),
                                     style = MaterialTheme.typography.bodyLarge,
                                     color = MaterialTheme.colorScheme.onSurfaceVariant
                                 )
                                 TextButton(onClick = { updateViewModel.checkForUpdate(isAutomatic = false) }) {
-                                    Text("Verificar")
+                                    Text(stringResource(R.string.check))
                                 }
                             }
                         }
                         is UpdateUiState.Error -> {
+                            val errorState = updateState as UpdateUiState.Error
+                            val errorMessage = if (errorState.formatArgs.isEmpty()) {
+                                stringResource(errorState.messageResId)
+                            } else {
+                                stringResource(
+                                    errorState.messageResId,
+                                    errorState.formatArgs.first()
+                                )
+                            }
                             Column(
                                 modifier = Modifier.fillMaxWidth(),
                                 verticalArrangement = Arrangement.spacedBy(8.dp)
                             ) {
                                 Text(
-                                    text = (updateState as UpdateUiState.Error).message,
+                                    text = errorMessage,
                                     style = MaterialTheme.typography.bodyMedium,
                                     color = MaterialTheme.colorScheme.error
                                 )
@@ -283,7 +299,7 @@ fun SettingsScreen() {
                                     onClick = { updateViewModel.checkForUpdate(isAutomatic = false) },
                                     modifier = Modifier.align(Alignment.End)
                                 ) {
-                                    Text("Tentar novamente")
+                                    Text(stringResource(R.string.try_again))
                                 }
                             }
                         }
@@ -293,7 +309,7 @@ fun SettingsScreen() {
                                 verticalArrangement = Arrangement.spacedBy(8.dp)
                             ) {
                                 Text(
-                                    text = "Download concluído!",
+                                    text = stringResource(R.string.download_complete_exclamation),
                                     style = MaterialTheme.typography.bodyLarge,
                                     color = MaterialTheme.colorScheme.primary
                                 )
@@ -301,7 +317,7 @@ fun SettingsScreen() {
                                     onClick = { updateViewModel.installUpdate(context) },
                                     modifier = Modifier.fillMaxWidth()
                                 ) {
-                                    Text("Instalar agora")
+                                    Text(stringResource(R.string.install_now))
                                 }
                             }
                         }
@@ -311,7 +327,7 @@ fun SettingsScreen() {
                                 verticalArrangement = Arrangement.spacedBy(8.dp)
                             ) {
                                 Text(
-                                    text = "Permissão necessária para instalar atualizações",
+                                    text = stringResource(R.string.permission_required_for_updates),
                                     style = MaterialTheme.typography.bodyMedium,
                                     color = MaterialTheme.colorScheme.error
                                 )
@@ -319,7 +335,7 @@ fun SettingsScreen() {
                                     onClick = { updateViewModel.requestInstallPermission(context) },
                                     modifier = Modifier.fillMaxWidth()
                                 ) {
-                                    Text("Abrir configurações")
+                                    Text(stringResource(R.string.open_settings_short))
                                 }
                             }
                         }
@@ -330,12 +346,12 @@ fun SettingsScreen() {
                                 verticalAlignment = Alignment.CenterVertically
                             ) {
                                 Text(
-                                    text = "Versão atual: ${updateViewModel.currentVersion}",
+                                    text = stringResource(R.string.current_version, updateViewModel.currentVersion),
                                     style = MaterialTheme.typography.bodyLarge,
                                     color = MaterialTheme.colorScheme.onSurfaceVariant
                                 )
                                 TextButton(onClick = { updateViewModel.checkForUpdate(isAutomatic = false) }) {
-                                    Text("Verificar")
+                                    Text(stringResource(R.string.check))
                                 }
                             }
                         }

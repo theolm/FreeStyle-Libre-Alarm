@@ -3,14 +3,16 @@ package dev.theolm.freestyle_libre_alarm.presentation.viewmodel
 import android.content.Context
 import android.content.Intent
 import android.os.Build
-import androidx.core.net.toUri
 import android.provider.Settings
+import androidx.annotation.StringRes
 import androidx.core.content.FileProvider
+import androidx.core.net.toUri
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.viewModelScope
 import dev.theolm.freestyle_libre_alarm.AppLogger
 import dev.theolm.freestyle_libre_alarm.BuildConfig
+import dev.theolm.freestyle_libre_alarm.R
 import dev.theolm.freestyle_libre_alarm.domain.model.UpdateInfo
 import dev.theolm.freestyle_libre_alarm.domain.repository.CheckUpdateResult
 import dev.theolm.freestyle_libre_alarm.domain.repository.SettingsRepository
@@ -30,7 +32,7 @@ sealed class UpdateUiState {
     data class UpdateAvailable(val updateInfo: UpdateInfo) : UpdateUiState()
     data class Downloading(val progress: Int) : UpdateUiState()
     data class Downloaded(val file: File) : UpdateUiState()
-    data class Error(val message: String) : UpdateUiState()
+    data class Error(@StringRes val messageResId: Int, val formatArgs: List<Any> = emptyList()) : UpdateUiState()
     data object UpToDate : UpdateUiState()
     data object NeedsPermission : UpdateUiState()
 }
@@ -69,10 +71,9 @@ class UpdateViewModel(
                     val shouldShow = if (lastDismissed != null) {
                         try {
                             SemVerParser.isNewer(lastDismissed, result.info.version)
-                        } catch (e: Exception) {
-                            logger.e(e) { "Error comparing versions" }
-                            true
-                        }
+                } catch (_: Exception) {
+                    true
+                }
                     } else {
                         true
                     }
@@ -90,11 +91,17 @@ class UpdateViewModel(
                     _uiState.value = UpdateUiState.UpToDate
                 }
                 is CheckUpdateResult.Error -> {
-                    logger.e { "Update check failed: ${result.message}" }
+                    logger.e { "Update check failed: code=${result.code}" }
                     if (isAutomatic) {
                         _uiState.value = UpdateUiState.Idle
                     } else {
-                        _uiState.value = UpdateUiState.Error(result.message)
+                        val resId = if (result.code != null) {
+                            R.string.error_update_check
+                        } else {
+                            R.string.error_update_network
+                        }
+                        val args = if (result.code != null) listOf(result.code as Any) else emptyList()
+                        _uiState.value = UpdateUiState.Error(resId, args)
                     }
                 }
             }
@@ -122,7 +129,7 @@ class UpdateViewModel(
                 _uiState.value = UpdateUiState.Downloaded(file)
             } catch (e: Exception) {
                 logger.e(e) { "Download failed" }
-                _uiState.value = UpdateUiState.Error("Falha ao baixar atualização. Tente novamente mais tarde.")
+                _uiState.value = UpdateUiState.Error(R.string.error_download_failed)
             }
         }
     }
@@ -199,7 +206,7 @@ class UpdateViewModel(
             logger.d { "Install intent launched successfully" }
         } catch (e: Exception) {
             logger.e(e) { "Failed to launch install intent" }
-            _uiState.value = UpdateUiState.Error("Erro ao iniciar instalação: ${e.message}")
+            _uiState.value = UpdateUiState.Error(R.string.error_install_failed, listOf(e.message ?: ""))
         }
     }
 
@@ -209,7 +216,7 @@ class UpdateViewModel(
             _uiState.value = UpdateUiState.Downloaded(file)
             installUpdate(context)
         } ?: run {
-            _uiState.value = UpdateUiState.Error("Arquivo de instalação não encontrado. Baixe novamente.")
+            _uiState.value = UpdateUiState.Error(R.string.error_install_file_not_found)
         }
         pendingInstallFile = null
     }

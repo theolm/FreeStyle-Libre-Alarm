@@ -36,7 +36,9 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
+import dev.theolm.freestyle_libre_alarm.R
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.LifecycleEventObserver
@@ -82,7 +84,7 @@ fun MonitoringScreen() {
             TopAppBar(
                 title = {
                     Text(
-                        text = "Monitoramento",
+                        text = stringResource(R.string.monitoring_title),
                         style = MaterialTheme.typography.headlineSmall,
                         fontWeight = FontWeight.Normal
                     )
@@ -118,20 +120,19 @@ fun MonitoringScreen() {
                     ) {
                         Icon(
                             imageVector = Icons.Default.Warning,
-                            contentDescription = "Aviso",
+                            contentDescription = stringResource(R.string.warning_icon_description),
                             tint = MaterialTheme.colorScheme.error,
                             modifier = Modifier.padding(bottom = 12.dp)
                         )
                         Text(
-                            text = "Acesso \u00e0s Notifica\u00e7\u00f5es Necess\u00e1rio",
+                            text = stringResource(R.string.notification_access_required),
                             style = MaterialTheme.typography.titleLarge,
                             fontWeight = FontWeight.Medium,
                             color = MaterialTheme.colorScheme.error
                         )
                         Spacer(modifier = Modifier.height(8.dp))
                         Text(
-                            text = "O app precisa acessar suas notifica\u00e7\u00f5es " +
-                                    "para registrar e analisar os alertas do FreeStyle Libre.",
+                            text = stringResource(R.string.notification_access_description),
                             style = MaterialTheme.typography.bodyLarge,
                             color = MaterialTheme.colorScheme.onBackground
                         )
@@ -149,7 +150,7 @@ fun MonitoringScreen() {
                             )
                         ) {
                             Text(
-                                text = "Abrir Configura\u00e7\u00f5es",
+                                text = stringResource(R.string.open_settings),
                                 style = MaterialTheme.typography.labelLarge,
                                 fontWeight = FontWeight.Medium,
                                 modifier = Modifier.padding(vertical = 6.dp, horizontal = 12.dp)
@@ -172,7 +173,7 @@ fun MonitoringScreen() {
                     modifier = Modifier.padding(32.dp)
                 ) {
                     Text(
-                        text = "Alarme",
+                        text = stringResource(R.string.alarm_title),
                         style = MaterialTheme.typography.titleLarge,
                         fontWeight = FontWeight.Medium,
                         color = MaterialTheme.colorScheme.onSurfaceVariant
@@ -196,10 +197,9 @@ fun MonitoringScreen() {
                     Spacer(modifier = Modifier.height(8.dp))
                     Text(
                         text = when {
-                            !isNotificationAccessEnabled -> "Ative o acesso \u00e0s " +
-                                    "notifica\u00e7\u00f5es para come\u00e7ar"
-                            uiState.settings.isAlarmEnabled -> "Alarme Ligado"
-                            else -> "Alarme Desligado"
+                            !isNotificationAccessEnabled -> stringResource(R.string.alarm_status_enable_access)
+                            uiState.settings.isAlarmEnabled -> stringResource(R.string.alarm_status_on)
+                            else -> stringResource(R.string.alarm_status_off)
                         },
                         style = MaterialTheme.typography.bodyLarge,
                         color = when {
@@ -224,7 +224,7 @@ fun MonitoringScreen() {
                     )
                 ) {
                     Text(
-                        text = "Parar Alarme",
+                        text = stringResource(R.string.stop_alarm),
                         style = MaterialTheme.typography.labelLarge,
                         fontWeight = FontWeight.Medium,
                         modifier = Modifier.padding(vertical = 6.dp, horizontal = 12.dp)
@@ -245,7 +245,7 @@ fun MonitoringScreen() {
                     )
                 ) {
                     Text(
-                        text = "Testar Alarme",
+                        text = stringResource(R.string.test_alarm),
                         style = MaterialTheme.typography.labelLarge,
                         fontWeight = FontWeight.Medium,
                         modifier = Modifier.padding(vertical = 6.dp, horizontal = 12.dp)

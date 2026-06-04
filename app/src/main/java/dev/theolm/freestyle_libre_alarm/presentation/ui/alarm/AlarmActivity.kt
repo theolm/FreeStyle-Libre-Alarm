@@ -35,6 +35,7 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
@@ -48,6 +49,7 @@ import dev.theolm.freestyle_libre_alarm.domain.model.AppSettings
 import dev.theolm.freestyle_libre_alarm.presentation.di.AppModule
 import dev.theolm.freestyle_libre_alarm.presentation.ui.theme.Canvas
 import dev.theolm.freestyle_libre_alarm.presentation.ui.theme.Coral
+import dev.theolm.freestyle_libre_alarm.R
 import dev.theolm.freestyle_libre_alarm.presentation.ui.theme.FreeStyleLibreAlarmTheme
 import dev.theolm.freestyle_libre_alarm.presentation.ui.theme.SurfaceDarkElevated
 import kotlinx.coroutines.launch
@@ -167,13 +169,13 @@ fun AlarmScreen(
         ) {
             Icon(
                 imageVector = Icons.Default.Warning,
-                contentDescription = "Alerta",
+                contentDescription = stringResource(R.string.alert_icon_description),
                 modifier = Modifier.size(48.dp),
                 tint = MaterialTheme.colorScheme.onPrimary
             )
 
             Text(
-                text = "Alerta de Glicose",
+                text = stringResource(R.string.glucose_alert_title),
                 style = MaterialTheme.typography.displaySmall,
                 fontWeight = FontWeight.Normal,
                 color = MaterialTheme.colorScheme.onPrimary,
@@ -192,14 +194,14 @@ fun AlarmScreen(
                 )
             ) {
                 Text(
-                    text = "Desligar Alarme",
+                    text = stringResource(R.string.dismiss_alarm),
                     style = MaterialTheme.typography.titleLarge,
                     fontWeight = FontWeight.Medium
                 )
             }
 
             Text(
-                text = "Desligar por:",
+                text = stringResource(R.string.snooze_label),
                 style = MaterialTheme.typography.bodyLarge,
                 color = MaterialTheme.colorScheme.onPrimary.copy(alpha = 0.8f),
                 textAlign = TextAlign.Center

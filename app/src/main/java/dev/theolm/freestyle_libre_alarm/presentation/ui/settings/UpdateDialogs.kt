@@ -13,8 +13,10 @@ import androidx.compose.material3.TextButton
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
+import dev.theolm.freestyle_libre_alarm.R
 import dev.theolm.freestyle_libre_alarm.domain.model.UpdateInfo
 
 @Composable
@@ -27,7 +29,7 @@ fun UpdateAvailableDialog(
         onDismissRequest = onDismiss,
         title = {
             Text(
-                text = "Nova versão disponível",
+                text = stringResource(R.string.new_version_dialog_title),
                 style = MaterialTheme.typography.headlineSmall
             )
         },
@@ -37,13 +39,13 @@ fun UpdateAvailableDialog(
                 horizontalAlignment = Alignment.CenterHorizontally
             ) {
                 Text(
-                    text = "Versão ${updateInfo.version}",
+                    text = stringResource(R.string.version_label, updateInfo.version),
                     style = MaterialTheme.typography.titleMedium,
                     color = MaterialTheme.colorScheme.primary
                 )
                 Spacer(modifier = Modifier.height(8.dp))
                 Text(
-                    text = updateInfo.changelog ?: "Uma nova versão está disponível",
+                    text = updateInfo.changelog ?: stringResource(R.string.new_version_available_body),
                     style = MaterialTheme.typography.bodyMedium,
                     textAlign = TextAlign.Center
                 )
@@ -51,12 +53,12 @@ fun UpdateAvailableDialog(
         },
         confirmButton = {
             Button(onClick = onConfirm) {
-                Text("Atualizar")
+                Text(stringResource(R.string.update))
             }
         },
         dismissButton = {
             TextButton(onClick = onDismiss) {
-                Text("Depois")
+                Text(stringResource(R.string.later))
             }
         }
     )
@@ -71,7 +73,7 @@ fun DownloadProgressDialog(
         onDismissRequest = { },
         title = {
             Text(
-                text = "Baixando atualização",
+                text = stringResource(R.string.downloading_update),
                 style = MaterialTheme.typography.headlineSmall
             )
         },
@@ -98,7 +100,7 @@ fun DownloadProgressDialog(
                 }
                 Spacer(modifier = Modifier.height(8.dp))
                 Text(
-                    text = "Aguarde...",
+                    text = stringResource(R.string.please_wait),
                     style = MaterialTheme.typography.bodySmall,
                     color = MaterialTheme.colorScheme.onSurfaceVariant
                 )
@@ -107,7 +109,7 @@ fun DownloadProgressDialog(
         confirmButton = { },
         dismissButton = {
             TextButton(onClick = onCancel) {
-                Text("Cancelar")
+                Text(stringResource(R.string.cancel))
             }
         }
     )
@@ -122,7 +124,7 @@ fun ErrorDialog(
         onDismissRequest = onDismiss,
         title = {
             Text(
-                text = "Erro",
+                text = stringResource(R.string.error_title),
                 style = MaterialTheme.typography.headlineSmall
             )
         },
@@ -134,7 +136,7 @@ fun ErrorDialog(
         },
         confirmButton = {
             Button(onClick = onDismiss) {
-                Text("OK")
+                Text(stringResource(R.string.ok))
             }
         }
     )
@@ -149,25 +151,24 @@ fun NeedsPermissionDialog(
         onDismissRequest = onDismiss,
         title = {
             Text(
-                text = "Permissão necessária",
+                text = stringResource(R.string.permission_required_title),
                 style = MaterialTheme.typography.headlineSmall
             )
         },
         text = {
             Text(
-                text = "Para instalar atualizações, você precisa permitir a instalação " +
-                        "de apps de fontes desconhecidas.",
+                text = stringResource(R.string.install_permission_description),
                 style = MaterialTheme.typography.bodyMedium
             )
         },
         confirmButton = {
             Button(onClick = onConfirm) {
-                Text("Abrir configurações")
+                Text(stringResource(R.string.open_settings_short))
             }
         },
         dismissButton = {
             TextButton(onClick = onDismiss) {
-                Text("Cancelar")
+                Text(stringResource(R.string.cancel))
             }
         }
     )
@@ -182,24 +183,24 @@ fun DownloadCompleteDialog(
         onDismissRequest = onDismiss,
         title = {
             Text(
-                text = "Download concluído",
+                text = stringResource(R.string.download_complete_title),
                 style = MaterialTheme.typography.headlineSmall
             )
         },
         text = {
             Text(
-                text = "A atualização foi baixada com sucesso. Deseja instalar agora?",
+                text = stringResource(R.string.download_complete_body),
                 style = MaterialTheme.typography.bodyMedium
             )
         },
         confirmButton = {
             Button(onClick = onInstall) {
-                Text("Instalar agora")
+                Text(stringResource(R.string.install_now))
             }
         },
         dismissButton = {
             TextButton(onClick = onDismiss) {
-                Text("Depois")
+                Text(stringResource(R.string.later))
             }
         }
     )

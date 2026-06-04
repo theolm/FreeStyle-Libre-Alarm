@@ -26,6 +26,7 @@ import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.vector.ImageVector
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.viewmodel.compose.viewModel
@@ -45,19 +46,21 @@ import dev.theolm.freestyle_libre_alarm.presentation.ui.settings.DownloadProgres
 import dev.theolm.freestyle_libre_alarm.presentation.ui.settings.NeedsPermissionDialog
 import dev.theolm.freestyle_libre_alarm.presentation.ui.settings.SettingsScreen
 import dev.theolm.freestyle_libre_alarm.presentation.ui.settings.UpdateAvailableDialog
+import dev.theolm.freestyle_libre_alarm.R
 import dev.theolm.freestyle_libre_alarm.presentation.ui.theme.FreeStyleLibreAlarmTheme
+import androidx.annotation.StringRes
 import dev.theolm.freestyle_libre_alarm.presentation.viewmodel.SettingsViewModel
 import dev.theolm.freestyle_libre_alarm.presentation.viewmodel.UpdateUiState
 import dev.theolm.freestyle_libre_alarm.presentation.viewmodel.UpdateViewModel
 
 sealed class BottomNavItem(
     val route: String,
-    val title: String,
+    @StringRes val titleRes: Int,
     val icon: ImageVector
 ) {
-    object Home : BottomNavItem("monitoring", "Home", Icons.Default.Home)
-    object History : BottomNavItem("history", "Hist\u00f3rico", Icons.Default.History)
-    object Settings : BottomNavItem("settings", "Config", Icons.Default.Settings)
+    object Home : BottomNavItem("monitoring", R.string.nav_home, Icons.Default.Home)
+    object History : BottomNavItem("history", R.string.nav_history, Icons.Default.History)
+    object Settings : BottomNavItem("settings", R.string.nav_settings, Icons.Default.Settings)
 }
 
 class MainActivity : ComponentActivity() {
@@ -184,12 +187,12 @@ fun MainScreen(
                         icon = {
                             Icon(
                                 imageVector = item.icon,
-                                contentDescription = item.title
+                                contentDescription = stringResource(item.titleRes)
                             )
                         },
                         label = {
                             Text(
-                                text = item.title,
+                                text = stringResource(item.titleRes),
                                 style = MaterialTheme.typography.labelLarge.copy(
                                     fontWeight = FontWeight.Medium
                                 )

@@ -26,7 +26,9 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
+import dev.theolm.freestyle_libre_alarm.R
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.lifecycle.viewmodel.compose.viewModel
@@ -53,7 +55,7 @@ fun HistoryScreen() {
             TopAppBar(
                 title = {
                     Text(
-                        text = "Hist\u00f3rico",
+                        text = stringResource(R.string.history_title),
                         style = MaterialTheme.typography.headlineSmall,
                         fontWeight = FontWeight.Normal
                     )
@@ -78,7 +80,7 @@ fun HistoryScreen() {
                     horizontalAlignment = Alignment.CenterHorizontally
                 ) {
                     Text(
-                        text = "Nenhum alerta registrado",
+                        text = stringResource(R.string.no_alerts_recorded),
                         style = MaterialTheme.typography.bodyLarge,
                         color = MaterialTheme.colorScheme.onSurfaceVariant.copy(alpha = 0.7f)
                     )
@@ -101,7 +103,7 @@ fun HistoryScreen() {
 fun GlucoseAlertCard(alert: GlucoseAlert) {
     val isHigh = alert.type == "HIGH"
     val badgeColor = if (isHigh) Color(0xFFE8A55A) else Color(0xFFC64545)
-    val badgeText = if (isHigh) "Alta" else "Baixa"
+    val badgeText = if (isHigh) stringResource(R.string.badge_high) else stringResource(R.string.badge_low)
 
     Card(
         modifier = Modifier.fillMaxWidth(),

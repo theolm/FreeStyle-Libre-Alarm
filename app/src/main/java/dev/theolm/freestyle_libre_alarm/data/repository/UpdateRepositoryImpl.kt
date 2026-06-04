@@ -49,9 +49,7 @@ class UpdateRepositoryImpl(
 
             if (response.status.value !in 200..299) {
                 logger.e { "GitHub API returned error: ${response.status}" }
-                return CheckUpdateResult.Error(
-                    "Erro ${response.status.value}: Não foi possível verificar atualizações"
-                )
+                return CheckUpdateResult.Error(response.status.value)
             }
 
             val release: GitHubReleaseDto = response.body()
@@ -85,14 +83,10 @@ class UpdateRepositoryImpl(
             )
         } catch (e: ClientRequestException) {
             logger.e(e) { "ClientRequestException: ${e.response.status}" }
-            CheckUpdateResult.Error(
-                "Erro ${e.response.status.value}: Não foi possível verificar atualizações"
-            )
+            CheckUpdateResult.Error(e.response.status.value)
         } catch (e: Exception) {
             logger.e(e) { "Exception during update check" }
-            CheckUpdateResult.Error(
-                "Não foi possível verificar atualizações. Verifique sua conexão e tente novamente."
-            )
+            CheckUpdateResult.Error()
         }
     }
 

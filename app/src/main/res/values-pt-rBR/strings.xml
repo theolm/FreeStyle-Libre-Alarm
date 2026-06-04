@@ -1,0 +1,92 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="app_name">Matthias Vive</string>
+
+    <!-- Navigation -->
+    <string name="nav_home">Home</string>
+    <string name="nav_history">Histórico</string>
+    <string name="nav_settings">Config</string>
+
+    <!-- Monitoring Screen -->
+    <string name="monitoring_title">Monitoramento</string>
+    <string name="warning_icon_description">Aviso</string>
+    <string name="notification_access_required">Acesso às Notificações Necessário</string>
+    <string name="notification_access_description">O app precisa acessar suas notificações para registrar e analisar os alertas do FreeStyle Libre.</string>
+    <string name="open_settings">Abrir Configurações</string>
+    <string name="alarm_title">Alarme</string>
+    <string name="alarm_status_enable_access">Ative o acesso às notificações para começar</string>
+    <string name="alarm_status_on">Alarme Ligado</string>
+    <string name="alarm_status_off">Alarme Desligado</string>
+    <string name="stop_alarm">Parar Alarme</string>
+    <string name="test_alarm">Testar Alarme</string>
+
+    <!-- History Screen -->
+    <string name="history_title">Histórico</string>
+    <string name="no_alerts_recorded">Nenhum alerta registrado</string>
+    <string name="badge_high">Alta</string>
+    <string name="badge_low">Baixa</string>
+
+    <!-- Alarm Screen -->
+    <string name="alert_icon_description">Alerta</string>
+    <string name="glucose_alert_title">Alerta de Glicose</string>
+    <string name="dismiss_alarm">Desligar Alarme</string>
+    <string name="snooze_label">Desligar por:</string>
+
+    <!-- Settings Screen -->
+    <string name="settings_title">Configurações</string>
+    <string name="monitoring_types">Tipos de Monitoramento</string>
+    <string name="monitor_low_glucose">Monitorar Glicose Baixa</string>
+    <string name="monitor_high_glucose">Monitorar Glicose Alta</string>
+    <string name="appearance">Aparência</string>
+    <string name="dark_mode">Modo Escuro</string>
+    <string name="update_section">Atualização</string>
+    <string name="checking">Verificando…</string>
+    <string name="new_version_available">Nova versão disponível: %1$s</string>
+    <string name="update_now">Atualizar agora</string>
+    <string name="downloading_progress">Baixando… %1$d%%</string>
+    <string name="app_up_to_date">O app está atualizado</string>
+    <string name="check">Verificar</string>
+    <string name="try_again">Tentar novamente</string>
+    <string name="download_complete_exclamation">Download concluído!</string>
+    <string name="install_now">Instalar agora</string>
+    <string name="permission_required_for_updates">Permissão necessária para instalar atualizações</string>
+    <string name="open_settings_short">Abrir configurações</string>
+    <string name="current_version">Versão atual: %1$s</string>
+
+    <!-- Update Dialogs -->
+    <string name="new_version_dialog_title">Nova versão disponível</string>
+    <string name="version_label">Versão %1$s</string>
+    <string name="new_version_available_body">Uma nova versão está disponível</string>
+    <string name="update">Atualizar</string>
+    <string name="later">Depois</string>
+    <string name="downloading_update">Baixando atualização</string>
+    <string name="please_wait">Aguarde…</string>
+    <string name="cancel">Cancelar</string>
+    <string name="error_title">Erro</string>
+    <string name="ok">OK</string>
+    <string name="permission_required_title">Permissão necessária</string>
+    <string name="install_permission_description">Para instalar atualizações, você precisa permitir a instalação de apps de fontes desconhecidas.</string>
+    <string name="download_complete_title">Download concluído</string>
+    <string name="download_complete_body">A atualização foi baixada com sucesso. Deseja instalar agora?</string>
+
+    <!-- Error Messages -->
+    <string name="error_download_failed">Falha ao baixar atualização. Tente novamente mais tarde.</string>
+    <string name="error_install_failed">Erro ao iniciar instalação: %1$s</string>
+    <string name="error_install_file_not_found">Arquivo de instalação não encontrado. Baixe novamente.</string>
+    <string name="error_update_check">Erro %1$d: Não foi possível verificar atualizações</string>
+    <string name="error_update_network">Não foi possível verificar atualizações. Verifique sua conexão e tente novamente.</string>
+
+    <!-- Alarm Manager -->
+    <string name="alarm_notification_title">Alarme de Glicose</string>
+    <string name="alarm_notification_text">Toque para desligar o alarme</string>
+    <string name="alarm_notification_action">Desligar</string>
+    <string name="alarm_channel_name">Alarmes do FreeStyle Libre</string>
+    <string name="alarm_channel_description">Canal para alarmes de glicose do FreeStyle Libre</string>
+
+    <!-- Foreground Service -->
+    <string name="service_channel_name">Serviço de Monitoramento</string>
+    <string name="service_channel_description">Mantém o monitoramento do FreeStyle Libre ativo</string>
+    <string name="service_notification_title">Monitoramento Ativo</string>
+    <string name="service_notification_text">Monitorando notificações do FreeStyle Libre</string>
+    <string name="alarm_foreground_service_description">Executa o serviço de alarme em primeiro plano para garantir que o alarme do FreeStyle Libre toque mesmo quando o app está em segundo plano.</string>
+</resources>

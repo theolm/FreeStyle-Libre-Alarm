@@ -6,7 +6,7 @@ import java.io.File
 sealed class CheckUpdateResult {
     data class Available(val info: UpdateInfo) : CheckUpdateResult()
     data object UpToDate : CheckUpdateResult()
-    data class Error(val message: String) : CheckUpdateResult()
+    data class Error(val code: Int? = null) : CheckUpdateResult()
 }
 
 interface UpdateRepository {

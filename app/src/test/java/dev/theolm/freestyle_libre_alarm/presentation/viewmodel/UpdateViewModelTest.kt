@@ -70,7 +70,7 @@ class UpdateViewModelTest {
 
     @Test
     fun `checkForUpdate with isAutomatic=true transitions to Idle on error`() = runTest {
-        fakeUpdateRepository.updateResult = CheckUpdateResult.Error("Erro 404: Não foi possível verificar atualizações")
+        fakeUpdateRepository.updateResult = CheckUpdateResult.Error(404)
 
         viewModel.checkForUpdate(isAutomatic = true)
         testDispatcher.scheduler.advanceUntilIdle()
@@ -80,14 +80,14 @@ class UpdateViewModelTest {
 
     @Test
     fun `checkForUpdate with isAutomatic=false transitions to Error on error`() = runTest {
-        fakeUpdateRepository.updateResult = CheckUpdateResult.Error("Erro 404: Não foi possível verificar atualizações")
+        fakeUpdateRepository.updateResult = CheckUpdateResult.Error(404)
 
         viewModel.checkForUpdate(isAutomatic = false)
         testDispatcher.scheduler.advanceUntilIdle()
 
         val state = viewModel.uiState.value
         assertTrue(state is UpdateUiState.Error)
-        assertEquals("Erro 404: Não foi possível verificar atualizações", (state as UpdateUiState.Error).message)
+        assertEquals(dev.theolm.freestyle_libre_alarm.R.string.error_update_check, (state as UpdateUiState.Error).messageResId)
     }
 
     @Test
