@@ -55,8 +55,7 @@ fun MonitoringScreen() {
     val viewModel: MonitoringViewModel = viewModel(
         factory = MonitoringViewModel.Factory(
             context = context,
-            settingsRepository = AppModule.provideSettingsRepository(context),
-            notificationRepository = AppModule.provideNotificationRepository()
+            settingsRepository = AppModule.provideSettingsRepository(context)
         )
     )
     val uiState by viewModel.uiState.collectAsState()
@@ -227,47 +226,6 @@ fun MonitoringScreen() {
                         fontWeight = FontWeight.Medium,
                         modifier = Modifier.padding(vertical = 6.dp, horizontal = 12.dp)
                     )
-                }
-            }
-
-            // Last Notification Card
-            Card(
-                modifier = Modifier.fillMaxWidth(),
-                colors = CardDefaults.cardColors(
-                    containerColor = MaterialTheme.colorScheme.surfaceVariant
-                ),
-                shape = androidx.compose.foundation.shape.RoundedCornerShape(12.dp),
-                elevation = CardDefaults.cardElevation(defaultElevation = 0.dp)
-            ) {
-                Column(
-                    modifier = Modifier.padding(32.dp)
-                ) {
-                    Text(
-                        text = "\u00daltima Notifica\u00e7\u00e3o",
-                        style = MaterialTheme.typography.titleLarge,
-                        fontWeight = FontWeight.Medium,
-                        color = MaterialTheme.colorScheme.onSurfaceVariant
-                    )
-                    Spacer(modifier = Modifier.height(16.dp))
-                    if (uiState.lastNotification != null) {
-                        Text(
-                            text = "T\u00edtulo: ${uiState.lastNotification?.title}",
-                            style = MaterialTheme.typography.bodyLarge,
-                            color = MaterialTheme.colorScheme.onSurfaceVariant
-                        )
-                        Spacer(modifier = Modifier.height(8.dp))
-                        Text(
-                            text = "Mensagem: ${uiState.lastNotification?.text}",
-                            style = MaterialTheme.typography.bodyLarge,
-                            color = MaterialTheme.colorScheme.onSurfaceVariant.copy(alpha = 0.7f)
-                        )
-                    } else {
-                        Text(
-                            text = "Nenhuma notifica\u00e7\u00e3o recebida ainda",
-                            style = MaterialTheme.typography.bodyLarge,
-                            color = MaterialTheme.colorScheme.onSurfaceVariant.copy(alpha = 0.7f)
-                        )
-                    }
                 }
             }
 

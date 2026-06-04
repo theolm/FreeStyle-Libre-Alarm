@@ -5,18 +5,18 @@ import androidx.room.Database
 import androidx.room.Room
 import androidx.room.RoomDatabase
 import dev.theolm.freestyle_libre_alarm.data.local.database.dao.AlarmEventDao
-import dev.theolm.freestyle_libre_alarm.data.local.database.dao.NotificationLogDao
+import dev.theolm.freestyle_libre_alarm.data.local.database.dao.GlucoseAlertDao
 import dev.theolm.freestyle_libre_alarm.data.local.database.entity.AlarmEventEntity
-import dev.theolm.freestyle_libre_alarm.data.local.database.entity.NotificationLogEntity
+import dev.theolm.freestyle_libre_alarm.data.local.database.entity.GlucoseAlertEntity
 
 @Database(
-    entities = [AlarmEventEntity::class, NotificationLogEntity::class],
-    version = 2,
+    entities = [AlarmEventEntity::class, GlucoseAlertEntity::class],
+    version = 3,
     exportSchema = false
 )
 abstract class LibreDatabase : RoomDatabase() {
     abstract fun alarmEventDao(): AlarmEventDao
-    abstract fun notificationLogDao(): NotificationLogDao
+    abstract fun glucoseAlertDao(): GlucoseAlertDao
 
     companion object {
         @Volatile
