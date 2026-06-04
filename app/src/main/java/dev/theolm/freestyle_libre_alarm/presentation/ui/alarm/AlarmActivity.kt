@@ -111,7 +111,7 @@ class AlarmActivity : ComponentActivity() {
             registerReceiver(
                 dismissReceiver,
                 intentFilter,
-                Context.RECEIVER_NOT_EXPORTED
+                RECEIVER_NOT_EXPORTED
             )
         } else {
             @Suppress("UnspecifiedRegisterReceiverFlag")
