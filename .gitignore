@@ -17,6 +17,8 @@ local.properties
 /.idea/navEditor.xml
 /.idea/assetWizardSettings.xml
 
+/.opencode/*
+
 # OS-specific files
 .DS_Store
 Thumbs.db
