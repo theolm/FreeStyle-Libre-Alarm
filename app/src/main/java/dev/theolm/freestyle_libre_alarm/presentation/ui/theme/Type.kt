@@ -9,19 +9,11 @@ import androidx.compose.ui.unit.sp
 import dev.theolm.freestyle_libre_alarm.R
 
 // =============================================================================
-// Claude Design System — Typography
-// Display: Copernicus Condensed (serif display)
-// Body/UI: Inter (humanist sans)
+// FreeStyle Libre Alarm — Typography
+// One humanist sans (Inter) for every role. Weight and size create hierarchy.
 // =============================================================================
 
-val DisplayFontFamily = FontFamily(
-    Font(R.font.copernicus_condensed_light, FontWeight.Light),
-    Font(R.font.copernicus_condensed_regular, FontWeight.Normal),
-    Font(R.font.copernicus_condensed_medium, FontWeight.Medium),
-    Font(R.font.copernicus_condensed_semibold, FontWeight.SemiBold)
-)
-
-val BodyFontFamily = FontFamily(
+val AppFontFamily = FontFamily(
     Font(R.font.inter_variable, FontWeight.Light),
     Font(R.font.inter_variable, FontWeight.Normal),
     Font(R.font.inter_variable, FontWeight.Medium),
@@ -30,118 +22,118 @@ val BodyFontFamily = FontFamily(
 )
 
 val Typography = Typography(
-    // ── Display (Serif) ─────────────────────────────────────────────────────
+    // ── Display (Alarm headline only) ─────────────────────────────────────────
     displayLarge = TextStyle(
-        fontFamily = DisplayFontFamily,
-        fontWeight = FontWeight.Normal,
-        fontSize = 48.sp,
-        lineHeight = 52.sp,
+        fontFamily = AppFontFamily,
+        fontWeight = FontWeight.SemiBold,
+        fontSize = 36.sp,
+        lineHeight = 42.sp,
         letterSpacing = (-0.5).sp
     ),
     displayMedium = TextStyle(
-        fontFamily = DisplayFontFamily,
-        fontWeight = FontWeight.Normal,
-        fontSize = 36.sp,
-        lineHeight = 42.sp,
+        fontFamily = AppFontFamily,
+        fontWeight = FontWeight.SemiBold,
+        fontSize = 32.sp,
+        lineHeight = 38.sp,
         letterSpacing = (-0.3).sp
     ),
     displaySmall = TextStyle(
-        fontFamily = DisplayFontFamily,
-        fontWeight = FontWeight.Normal,
+        fontFamily = AppFontFamily,
+        fontWeight = FontWeight.SemiBold,
         fontSize = 28.sp,
         lineHeight = 34.sp,
         letterSpacing = (-0.2).sp
     ),
 
-    // ── Headlines (Serif) ───────────────────────────────────────────────────
+    // ── Headlines (Screen titles) ─────────────────────────────────────────────
     headlineLarge = TextStyle(
-        fontFamily = DisplayFontFamily,
-        fontWeight = FontWeight.Normal,
-        fontSize = 32.sp,
-        lineHeight = 38.sp,
-        letterSpacing = (-0.3).sp
-    ),
-    headlineMedium = TextStyle(
-        fontFamily = DisplayFontFamily,
-        fontWeight = FontWeight.Normal,
-        fontSize = 24.sp,
-        lineHeight = 30.sp,
+        fontFamily = AppFontFamily,
+        fontWeight = FontWeight.SemiBold,
+        fontSize = 28.sp,
+        lineHeight = 34.sp,
         letterSpacing = (-0.2).sp
     ),
+    headlineMedium = TextStyle(
+        fontFamily = AppFontFamily,
+        fontWeight = FontWeight.SemiBold,
+        fontSize = 24.sp,
+        lineHeight = 30.sp,
+        letterSpacing = (-0.15).sp
+    ),
     headlineSmall = TextStyle(
-        fontFamily = DisplayFontFamily,
-        fontWeight = FontWeight.Normal,
+        fontFamily = AppFontFamily,
+        fontWeight = FontWeight.SemiBold,
         fontSize = 20.sp,
         lineHeight = 26.sp,
         letterSpacing = (-0.1).sp
     ),
 
-    // ── Titles (Sans-Serif, weight 500) ─────────────────────────────────────
+    // ── Titles (Card headers, section labels) ─────────────────────────────────
     titleLarge = TextStyle(
-        fontFamily = BodyFontFamily,
-        fontWeight = FontWeight.Medium,
-        fontSize = 22.sp,
-        lineHeight = 30.sp,
-        letterSpacing = 0.sp
-    ),
-    titleMedium = TextStyle(
-        fontFamily = BodyFontFamily,
-        fontWeight = FontWeight.Medium,
+        fontFamily = AppFontFamily,
+        fontWeight = FontWeight.SemiBold,
         fontSize = 18.sp,
         lineHeight = 26.sp,
         letterSpacing = 0.sp
     ),
-    titleSmall = TextStyle(
-        fontFamily = BodyFontFamily,
-        fontWeight = FontWeight.Medium,
+    titleMedium = TextStyle(
+        fontFamily = AppFontFamily,
+        fontWeight = FontWeight.SemiBold,
         fontSize = 16.sp,
         lineHeight = 24.sp,
         letterSpacing = 0.sp
     ),
-
-    // ── Body (Sans-Serif, weight 400) ───────────────────────────────────────
-    bodyLarge = TextStyle(
-        fontFamily = BodyFontFamily,
-        fontWeight = FontWeight.Normal,
-        fontSize = 18.sp,
-        lineHeight = 28.sp,
-        letterSpacing = 0.sp
-    ),
-    bodyMedium = TextStyle(
-        fontFamily = BodyFontFamily,
-        fontWeight = FontWeight.Normal,
-        fontSize = 16.sp,
-        lineHeight = 26.sp,
-        letterSpacing = 0.sp
-    ),
-    bodySmall = TextStyle(
-        fontFamily = BodyFontFamily,
-        fontWeight = FontWeight.Normal,
+    titleSmall = TextStyle(
+        fontFamily = AppFontFamily,
+        fontWeight = FontWeight.SemiBold,
         fontSize = 14.sp,
         lineHeight = 22.sp,
         letterSpacing = 0.sp
     ),
 
-    // ── Labels (Sans-Serif) ─────────────────────────────────────────────────
+    // ── Body (Running text, labels) ───────────────────────────────────────────
+    bodyLarge = TextStyle(
+        fontFamily = AppFontFamily,
+        fontWeight = FontWeight.Normal,
+        fontSize = 16.sp,
+        lineHeight = 24.sp,
+        letterSpacing = 0.sp
+    ),
+    bodyMedium = TextStyle(
+        fontFamily = AppFontFamily,
+        fontWeight = FontWeight.Normal,
+        fontSize = 14.sp,
+        lineHeight = 22.sp,
+        letterSpacing = 0.sp
+    ),
+    bodySmall = TextStyle(
+        fontFamily = AppFontFamily,
+        fontWeight = FontWeight.Normal,
+        fontSize = 12.sp,
+        lineHeight = 18.sp,
+        letterSpacing = 0.sp
+    ),
+
+    // ── Labels (Buttons, navigation, list titles) ─────────────────────────────
     labelLarge = TextStyle(
-        fontFamily = BodyFontFamily,
+        fontFamily = AppFontFamily,
         fontWeight = FontWeight.Medium,
         fontSize = 14.sp,
         lineHeight = 20.sp,
-        letterSpacing = 0.sp
+        letterSpacing = (0.15).sp
     ),
     labelMedium = TextStyle(
-        fontFamily = BodyFontFamily,
+        fontFamily = AppFontFamily,
         fontWeight = FontWeight.Medium,
         fontSize = 12.sp,
         lineHeight = 18.sp,
-        letterSpacing = (1.5).sp
+        letterSpacing = (0.25).sp
     ),
     labelSmall = TextStyle(
-        fontFamily = BodyFontFamily,
-        fontWeight = FontWeight.Normal,
-        fontSize = 13.sp,
-        lineHeight = 18.sp,
-        letterSpacing = 0.sp
+        fontFamily = AppFontFamily,
+        fontWeight = FontWeight.Medium,
+        fontSize = 11.sp,
+        lineHeight = 16.sp,
+        letterSpacing = (0.25).sp
     )
 )

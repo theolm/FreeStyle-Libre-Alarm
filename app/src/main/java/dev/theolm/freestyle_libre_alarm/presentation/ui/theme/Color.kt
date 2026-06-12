@@ -3,44 +3,48 @@ package dev.theolm.freestyle_libre_alarm.presentation.ui.theme
 import androidx.compose.ui.graphics.Color
 
 // =============================================================================
-// Claude Design System — Color Tokens
-// Warm-canvas editorial interface adapted for mobile.
+// FreeStyle Libre Alarm — Color Tokens
+// Nightstand Companion: calm by day, impossible to miss at night.
 // =============================================================================
 
 // ── Brand ───────────────────────────────────────────────────────────────────
-val Coral = Color(0xFFcc785c)
-val CoralActive = Color(0xFFa9583e)
-val CoralDisabled = Color(0xFFe6dfd8)
+val AlarmRed = Color(0xFFc43e2c)
+val AlarmRedActive = Color(0xFFa83222)
+val AlarmRedDisabled = Color(0xFFe8d8d5)
+
+val InfoBlue = Color(0xFF0077a3)
+val InfoBlueActive = Color(0xFF005f82)
 
 // ── Surface (Light) ─────────────────────────────────────────────────────────
-val Canvas = Color(0xFFfaf9f5)
-val SurfaceSoft = Color(0xFFf5f0e8)
-val SurfaceCard = Color(0xFFefe9de)
-val SurfaceCreamStrong = Color(0xFFe8e0d2)
-val Hairline = Color(0xFFe6dfd8)
-val HairlineSoft = Color(0xFFebe6df)
+val Background = Color(0xFFffffff)
+val Surface = Color(0xFFf5f4f3)
+val SurfaceElevated = Color(0xFFffffff)
+val Hairline = Color(0xFFe7e5e3)
 
 // ── Surface (Dark) ──────────────────────────────────────────────────────────
-val SurfaceDark = Color(0xFF181715)
-val SurfaceDarkElevated = Color(0xFF252320)
-val SurfaceDarkSoft = Color(0xFF1f1e1b)
+val DarkBackground = Color(0xFF0f0e0d)
+val DarkSurface = Color(0xFF1a1817)
+val DarkSurfaceElevated = Color(0xFF252321)
+val DarkHairline = Color(0xFF2e2b29)
 
 // ── Text ────────────────────────────────────────────────────────────────────
-val Ink = Color(0xFF141413)
-val BodyStrong = Color(0xFF252523)
-val Body = Color(0xFF3d3d3a)
-val Muted = Color(0xFF6c6a64)
-val MutedSoft = Color(0xFF8e8b82)
+val Ink = Color(0xFF1c1917)
+val Body = Color(0xFF3d3a38)
+val Muted = Color(0xFF6b6866)
+val MutedSoft = Color(0xFF9a9795)
 
 val OnPrimary = Color(0xFFffffff)
-val OnDark = Color(0xFFfaf9f5)
-val OnDarkSoft = Color(0xFFa09d96)
+val DarkOnPrimary = Color(0xFFffffff)
+val DarkInk = Color(0xFFf2f0ee)
+val DarkBody = Color(0xFFd8d6d3)
+val DarkMuted = Color(0xFF9a9795)
+val DarkMutedSoft = Color(0xFF767370)
 
 // ── Semantic ────────────────────────────────────────────────────────────────
-val Success = Color(0xFF5db872)
-val Warning = Color(0xFFd4a017)
-val Error = Color(0xFFc64545)
+val Success = Color(0xFF2d7a3e)
+val Warning = Color(0xFFc49600)
+val Error = Color(0xFFb52b1f)
 
-// ── Accents ─────────────────────────────────────────────────────────────────
-val AccentTeal = Color(0xFF5db8a6)
-val AccentAmber = Color(0xFFe8a55a)
+// ── Dark Brand ──────────────────────────────────────────────────────────────
+val DarkAlarmRed = Color(0xFFe85a4a)
+val DarkAlarmRedActive = Color(0xFFf27a6b)
