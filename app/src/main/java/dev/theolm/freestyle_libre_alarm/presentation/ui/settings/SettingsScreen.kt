@@ -154,7 +154,7 @@ private fun SettingsCard(
     Card(
         modifier = Modifier.fillMaxWidth(),
         colors = CardDefaults.cardColors(
-            containerColor = MaterialTheme.colorScheme.surfaceVariant
+            containerColor = MaterialTheme.colorScheme.surface
         ),
         shape = CardShape,
         elevation = CardDefaults.cardElevation(defaultElevation = 0.dp)

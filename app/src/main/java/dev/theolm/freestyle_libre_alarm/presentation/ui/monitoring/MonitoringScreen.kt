@@ -172,7 +172,7 @@ private fun PermissionCard(
     Card(
         modifier = Modifier.fillMaxWidth(),
         colors = CardDefaults.cardColors(
-            containerColor = MaterialTheme.colorScheme.errorContainer
+            containerColor = MaterialTheme.colorScheme.surface
         ),
         shape = CardShape,
         border = BorderStroke(1.dp, MaterialTheme.colorScheme.error),
@@ -231,7 +231,7 @@ private fun StatusCard(
     Card(
         modifier = Modifier.fillMaxWidth(),
         colors = CardDefaults.cardColors(
-            containerColor = MaterialTheme.colorScheme.surfaceVariant
+            containerColor = MaterialTheme.colorScheme.surface
         ),
         shape = CardShape,
         elevation = CardDefaults.cardElevation(defaultElevation = 0.dp)
@@ -260,9 +260,9 @@ private fun StatusCard(
                     style = MaterialTheme.typography.bodyLarge,
                     color = when {
                         !isNotificationAccessEnabled ->
-                            MaterialTheme.colorScheme.onSurfaceVariant.copy(alpha = 0.7f)
+                            MaterialTheme.colorScheme.onSurfaceVariant
                         isAlarmEnabled -> MaterialTheme.colorScheme.primary
-                        else -> MaterialTheme.colorScheme.onSurfaceVariant.copy(alpha = 0.7f)
+                        else -> MaterialTheme.colorScheme.onSurfaceVariant
                     }
                 )
             }

@@ -38,6 +38,7 @@ import dev.theolm.freestyle_libre_alarm.R
 import dev.theolm.freestyle_libre_alarm.domain.model.GlucoseAlert
 import dev.theolm.freestyle_libre_alarm.presentation.di.AppModule
 import dev.theolm.freestyle_libre_alarm.presentation.viewmodel.HistoryViewModel
+import dev.theolm.freestyle_libre_alarm.presentation.ui.theme.Ink
 import java.text.SimpleDateFormat
 import java.util.Date
 import java.util.Locale
@@ -105,7 +106,7 @@ private fun EmptyHistoryState() {
         Text(
             text = stringResource(R.string.no_alerts_recorded),
             style = MaterialTheme.typography.bodyLarge,
-            color = MaterialTheme.colorScheme.onSurfaceVariant.copy(alpha = 0.7f)
+            color = MaterialTheme.colorScheme.onSurfaceVariant
         )
     }
 }
@@ -124,12 +125,12 @@ fun GlucoseAlertCard(alert: GlucoseAlert) {
         stringResource(R.string.badge_low)
     }
     val badgeIcon = if (isHigh) Icons.AutoMirrored.Filled.TrendingUp else Icons.AutoMirrored.Filled.TrendingDown
-    val badgeContentColor = if (isHigh) MaterialTheme.colorScheme.onTertiary else MaterialTheme.colorScheme.onError
+    val badgeContentColor = if (isHigh) Ink else MaterialTheme.colorScheme.onError
 
     Card(
         modifier = Modifier.fillMaxWidth(),
         colors = CardDefaults.cardColors(
-            containerColor = MaterialTheme.colorScheme.surfaceVariant
+            containerColor = MaterialTheme.colorScheme.surface
         ),
         shape = CardShape,
         elevation = CardDefaults.cardElevation(defaultElevation = 0.dp)
@@ -164,7 +165,7 @@ fun GlucoseAlertCard(alert: GlucoseAlert) {
                 Text(
                     text = formatTimestamp(alert.timestamp),
                     style = MaterialTheme.typography.bodyMedium,
-                    color = MaterialTheme.colorScheme.onSurfaceVariant.copy(alpha = 0.7f)
+                    color = MaterialTheme.colorScheme.onSurfaceVariant
                 )
             }
 
