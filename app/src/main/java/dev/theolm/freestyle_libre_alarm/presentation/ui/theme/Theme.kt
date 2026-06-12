@@ -7,27 +7,29 @@ import androidx.compose.material3.lightColorScheme
 import androidx.compose.runtime.Composable
 
 private val LightColorScheme = lightColorScheme(
-    primary = Coral,
+    primary = AlarmRed,
     onPrimary = OnPrimary,
-    primaryContainer = Coral.copy(alpha = 0.12f),
-    onPrimaryContainer = CoralActive,
+    primaryContainer = AlarmRed.copy(alpha = 0.12f),
+    onPrimaryContainer = AlarmRedActive,
 
-    secondary = SurfaceSoft,
+    secondary = Surface,
     onSecondary = Ink,
-    secondaryContainer = SurfaceCard,
+    secondaryContainer = SurfaceElevated,
     onSecondaryContainer = Body,
 
-    tertiary = AccentTeal,
+    tertiary = InfoBlue,
     onTertiary = OnPrimary,
+    tertiaryContainer = InfoBlue.copy(alpha = 0.12f),
+    onTertiaryContainer = InfoBlueActive,
 
-    background = Canvas,
+    background = Background,
     onBackground = Ink,
 
-    surface = Canvas,
+    surface = Surface,
     onSurface = Ink,
-    surfaceVariant = SurfaceCard,
-    onSurfaceVariant = Muted,
-    surfaceTint = Coral,
+    surfaceVariant = SurfaceElevated,
+    onSurfaceVariant = Body,
+    surfaceTint = AlarmRed,
 
     error = Error,
     onError = OnPrimary,
@@ -35,51 +37,53 @@ private val LightColorScheme = lightColorScheme(
     onErrorContainer = Error,
 
     outline = Hairline,
-    outlineVariant = HairlineSoft,
+    outlineVariant = Hairline.copy(alpha = 0.5f),
 
-    inverseSurface = SurfaceDark,
-    inverseOnSurface = OnDark,
-    inversePrimary = Coral,
+    inverseSurface = DarkSurface,
+    inverseOnSurface = DarkInk,
+    inversePrimary = DarkAlarmRed,
 
     scrim = Ink.copy(alpha = 0.4f)
 )
 
 private val DarkColorScheme = darkColorScheme(
-    primary = Coral,
-    onPrimary = OnPrimary,
-    primaryContainer = Coral.copy(alpha = 0.18f),
-    onPrimaryContainer = Coral.copy(alpha = 0.9f),
+    primary = DarkAlarmRed,
+    onPrimary = DarkOnPrimary,
+    primaryContainer = DarkAlarmRed.copy(alpha = 0.18f),
+    onPrimaryContainer = DarkAlarmRedActive,
 
-    secondary = SurfaceDarkElevated,
-    onSecondary = OnDark,
-    secondaryContainer = SurfaceDarkSoft,
-    onSecondaryContainer = OnDarkSoft,
+    secondary = DarkSurface,
+    onSecondary = DarkInk,
+    secondaryContainer = DarkSurfaceElevated,
+    onSecondaryContainer = DarkBody,
 
-    tertiary = AccentTeal,
+    tertiary = InfoBlue,
     onTertiary = OnPrimary,
+    tertiaryContainer = InfoBlue.copy(alpha = 0.18f),
+    onTertiaryContainer = InfoBlueActive,
 
-    background = SurfaceDark,
-    onBackground = OnDark,
+    background = DarkBackground,
+    onBackground = DarkInk,
 
-    surface = SurfaceDark,
-    onSurface = OnDark,
-    surfaceVariant = SurfaceDarkElevated,
-    onSurfaceVariant = OnDarkSoft,
-    surfaceTint = Coral,
+    surface = DarkSurface,
+    onSurface = DarkInk,
+    surfaceVariant = DarkSurfaceElevated,
+    onSurfaceVariant = DarkBody,
+    surfaceTint = DarkAlarmRed,
 
     error = Error,
     onError = OnPrimary,
     errorContainer = Error.copy(alpha = 0.18f),
     onErrorContainer = Error.copy(alpha = 0.9f),
 
-    outline = OnDarkSoft.copy(alpha = 0.3f),
-    outlineVariant = OnDarkSoft.copy(alpha = 0.15f),
+    outline = DarkHairline,
+    outlineVariant = DarkHairline.copy(alpha = 0.5f),
 
-    inverseSurface = Canvas,
+    inverseSurface = Surface,
     inverseOnSurface = Ink,
-    inversePrimary = Coral,
+    inversePrimary = AlarmRed,
 
-    scrim = Ink.copy(alpha = 0.6f)
+    scrim = DarkInk.copy(alpha = 0.6f)
 )
 
 @Composable

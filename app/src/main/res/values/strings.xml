@@ -30,6 +30,9 @@
     <string name="glucose_alert_title">Glucose Alert</string>
     <string name="dismiss_alarm">Dismiss Alarm</string>
     <string name="snooze_label">Snooze for:</string>
+    <string name="snooze_minutes">%1$d min</string>
+    <string name="snooze_one_hour">1 h</string>
+    <string name="snooze_three_hours">3 h</string>
 
     <!-- Settings Screen -->
     <string name="settings_title">Settings</string>

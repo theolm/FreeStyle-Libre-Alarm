@@ -14,13 +14,13 @@ import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.shape.RoundedCornerShape
-import androidx.compose.foundation.layout.Row
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Warning
 import androidx.compose.material3.Button
@@ -44,16 +44,18 @@ import androidx.core.view.WindowInsetsControllerCompat
 import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.lifecycleScope
 import androidx.lifecycle.repeatOnLifecycle
+import dev.theolm.freestyle_libre_alarm.R
 import dev.theolm.freestyle_libre_alarm.data.alarm.AlarmManager
 import dev.theolm.freestyle_libre_alarm.domain.model.AppSettings
 import dev.theolm.freestyle_libre_alarm.presentation.di.AppModule
-import dev.theolm.freestyle_libre_alarm.presentation.ui.theme.Canvas
-import dev.theolm.freestyle_libre_alarm.presentation.ui.theme.Coral
-import dev.theolm.freestyle_libre_alarm.R
+import dev.theolm.freestyle_libre_alarm.presentation.ui.theme.Background
+import dev.theolm.freestyle_libre_alarm.presentation.ui.theme.DarkSurfaceElevated
 import dev.theolm.freestyle_libre_alarm.presentation.ui.theme.FreeStyleLibreAlarmTheme
-import dev.theolm.freestyle_libre_alarm.presentation.ui.theme.SurfaceDarkElevated
-import kotlinx.coroutines.launch
 import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.launch
+
+private val DismissButtonShape = RoundedCornerShape(8.dp)
+private val SnoozeButtonShape = RoundedCornerShape(8.dp)
 
 class AlarmActivity : ComponentActivity() {
 
@@ -142,8 +144,8 @@ class AlarmActivity : ComponentActivity() {
         } else {
             window.addFlags(
                 WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON or
-                WindowManager.LayoutParams.FLAG_SHOW_WHEN_LOCKED or
-                WindowManager.LayoutParams.FLAG_TURN_SCREEN_ON
+                    WindowManager.LayoutParams.FLAG_SHOW_WHEN_LOCKED or
+                    WindowManager.LayoutParams.FLAG_TURN_SCREEN_ON
             )
         }
     }
@@ -170,14 +172,13 @@ fun AlarmScreen(
             Icon(
                 imageVector = Icons.Default.Warning,
                 contentDescription = stringResource(R.string.alert_icon_description),
-                modifier = Modifier.size(48.dp),
+                modifier = Modifier.size(56.dp),
                 tint = MaterialTheme.colorScheme.onPrimary
             )
 
             Text(
                 text = stringResource(R.string.glucose_alert_title),
-                style = MaterialTheme.typography.displaySmall,
-                fontWeight = FontWeight.Normal,
+                style = MaterialTheme.typography.displayLarge,
                 color = MaterialTheme.colorScheme.onPrimary,
                 textAlign = TextAlign.Center
             )
@@ -187,23 +188,23 @@ fun AlarmScreen(
                 modifier = Modifier
                     .fillMaxWidth()
                     .height(56.dp),
-                shape = RoundedCornerShape(8.dp),
+                shape = DismissButtonShape,
                 colors = ButtonDefaults.buttonColors(
-                    containerColor = if (isDarkTheme) SurfaceDarkElevated else Canvas,
-                    contentColor = Coral
+                    containerColor = if (isDarkTheme) DarkSurfaceElevated else Background,
+                    contentColor = MaterialTheme.colorScheme.primary
                 )
             ) {
                 Text(
                     text = stringResource(R.string.dismiss_alarm),
                     style = MaterialTheme.typography.titleLarge,
-                    fontWeight = FontWeight.Medium
+                    fontWeight = FontWeight.SemiBold
                 )
             }
 
             Text(
                 text = stringResource(R.string.snooze_label),
                 style = MaterialTheme.typography.bodyLarge,
-                color = MaterialTheme.colorScheme.onPrimary.copy(alpha = 0.8f),
+                color = MaterialTheme.colorScheme.onPrimary.copy(alpha = 0.9f),
                 textAlign = TextAlign.Center
             )
 
@@ -211,40 +212,35 @@ fun AlarmScreen(
                 modifier = Modifier.fillMaxWidth(),
                 horizontalArrangement = Arrangement.spacedBy(8.dp)
             ) {
-                OutlinedButton(
-                    onClick = { onSnooze(30) },
-                    modifier = Modifier.weight(1f),
-                    shape = RoundedCornerShape(8.dp),
-                    colors = ButtonDefaults.outlinedButtonColors(
-                        containerColor = MaterialTheme.colorScheme.onPrimary.copy(alpha = 0.1f),
-                        contentColor = MaterialTheme.colorScheme.onPrimary
-                    )
-                ) {
-                    Text("30 min")
-                }
-                OutlinedButton(
-                    onClick = { onSnooze(60) },
-                    modifier = Modifier.weight(1f),
-                    shape = RoundedCornerShape(8.dp),
-                    colors = ButtonDefaults.outlinedButtonColors(
-                        containerColor = MaterialTheme.colorScheme.onPrimary.copy(alpha = 0.1f),
-                        contentColor = MaterialTheme.colorScheme.onPrimary
-                    )
-                ) {
-                    Text("1 h")
-                }
-                OutlinedButton(
-                    onClick = { onSnooze(180) },
-                    modifier = Modifier.weight(1f),
-                    shape = RoundedCornerShape(8.dp),
-                    colors = ButtonDefaults.outlinedButtonColors(
-                        containerColor = MaterialTheme.colorScheme.onPrimary.copy(alpha = 0.1f),
-                        contentColor = MaterialTheme.colorScheme.onPrimary
-                    )
-                ) {
-                    Text("3 h")
-                }
+                SnoozeButton(minutes = 30, onClick = { onSnooze(30) }, modifier = Modifier.weight(1f))
+                SnoozeButton(minutes = 60, onClick = { onSnooze(60) }, modifier = Modifier.weight(1f))
+                SnoozeButton(minutes = 180, onClick = { onSnooze(180) }, modifier = Modifier.weight(1f))
             }
         }
+    }
+}
+
+@Composable
+private fun SnoozeButton(
+    minutes: Int,
+    onClick: () -> Unit,
+    modifier: Modifier = Modifier
+) {
+    val label = when (minutes) {
+        60 -> stringResource(R.string.snooze_one_hour)
+        180 -> stringResource(R.string.snooze_three_hours)
+        else -> stringResource(R.string.snooze_minutes, minutes)
+    }
+
+    OutlinedButton(
+        onClick = onClick,
+        modifier = modifier,
+        shape = SnoozeButtonShape,
+        colors = ButtonDefaults.outlinedButtonColors(
+            containerColor = MaterialTheme.colorScheme.onPrimary.copy(alpha = 0.12f),
+            contentColor = MaterialTheme.colorScheme.onPrimary
+        )
+    ) {
+        Text(label)
     }
 }
