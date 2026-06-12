@@ -4,17 +4,19 @@ import android.content.Context
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.filled.DarkMode
+import androidx.compose.material.icons.automirrored.filled.Help
+import androidx.compose.material.icons.filled.Brightness6
 import androidx.compose.material.icons.filled.MonitorHeart
-import androidx.compose.material.icons.filled.Notifications
 import androidx.compose.material.icons.filled.Update
 import androidx.compose.material3.Button
 import androidx.compose.material3.ButtonDefaults
@@ -84,103 +86,130 @@ fun SettingsScreen() {
                 )
             )
         }
-    ) { paddingValues ->
-        Column(
-            modifier = Modifier
-                .fillMaxSize()
-                .padding(paddingValues)
-                .padding(horizontal = 16.dp, vertical = 12.dp)
-                .verticalScroll(rememberScrollState()),
-            verticalArrangement = Arrangement.spacedBy(16.dp)
-        ) {
-            SettingsCard(
-                icon = Icons.Default.MonitorHeart,
-                title = stringResource(R.string.monitoring_types)
+        ) { paddingValues ->
+            Column(
+                modifier = Modifier
+                    .fillMaxSize()
+                    .padding(paddingValues)
+                    .padding(horizontal = 16.dp)
+                    .verticalScroll(rememberScrollState()),
+                verticalArrangement = Arrangement.spacedBy(24.dp)
             ) {
-                SettingToggle(
-                    label = stringResource(R.string.monitor_low_glucose),
-                    checked = settings.isLowGlucoseEnabled,
-                    onCheckedChange = { viewModel.updateLowGlucoseEnabled(it) }
-                )
-                SettingToggle(
-                    label = stringResource(R.string.monitor_high_glucose),
-                    checked = settings.isHighGlucoseEnabled,
-                    onCheckedChange = { viewModel.updateHighGlucoseEnabled(it) }
-                )
-            }
+                Spacer(modifier = Modifier.height(4.dp))
 
-            SettingsCard(
-                icon = Icons.Default.DarkMode,
-                title = stringResource(R.string.appearance)
-            ) {
-                SettingToggle(
-                    label = stringResource(R.string.dark_mode),
-                    checked = settings.isDarkModeEnabled,
-                    onCheckedChange = { viewModel.updateDarkModeEnabled(it) }
-                )
-            }
+                SettingsSection(
+                    icon = Icons.Default.MonitorHeart,
+                    title = stringResource(R.string.monitoring_types)
+                ) {
+                    SettingToggle(
+                        label = stringResource(R.string.monitor_low_glucose),
+                        checked = settings.isLowGlucoseEnabled,
+                        onCheckedChange = { viewModel.updateLowGlucoseEnabled(it) }
+                    )
+                    SettingToggle(
+                        label = stringResource(R.string.monitor_high_glucose),
+                        checked = settings.isHighGlucoseEnabled,
+                        onCheckedChange = { viewModel.updateHighGlucoseEnabled(it) }
+                    )
+                }
 
-            SettingsCard(
-                icon = Icons.Default.Update,
-                title = stringResource(R.string.update_section)
-            ) {
-                UpdateSection(
-                    updateState = updateState,
-                    updateViewModel = updateViewModel,
-                    context = context
-                )
-            }
+                SettingsSection(
+                    icon = Icons.Default.Brightness6,
+                    title = stringResource(R.string.appearance)
+                ) {
+                    SettingToggle(
+                        label = stringResource(R.string.dark_mode),
+                        checked = settings.isDarkModeEnabled,
+                        onCheckedChange = { viewModel.updateDarkModeEnabled(it) }
+                    )
+                }
 
-            SettingsCard(
-                icon = Icons.Default.Notifications,
-                title = stringResource(R.string.notification_access_required)
-            ) {
-                Text(
-                    text = stringResource(R.string.notification_access_description),
-                    style = MaterialTheme.typography.bodyMedium,
-                    color = MaterialTheme.colorScheme.onSurfaceVariant
-                )
+                SettingsSection(
+                    icon = Icons.Default.Update,
+                    title = stringResource(R.string.update_section)
+                ) {
+                    UpdateSection(
+                        updateState = updateState,
+                        updateViewModel = updateViewModel,
+                        context = context
+                    )
+                }
+
+                Column(
+                    modifier = Modifier.padding(horizontal = 8.dp),
+                    verticalArrangement = Arrangement.spacedBy(8.dp)
+                ) {
+                    Row(
+                        verticalAlignment = Alignment.CenterVertically,
+                        horizontalArrangement = Arrangement.spacedBy(12.dp)
+                    ) {
+                        Icon(
+                            imageVector = Icons.AutoMirrored.Filled.Help,
+                            contentDescription = null,
+                            tint = MaterialTheme.colorScheme.primary,
+                            modifier = Modifier.size(20.dp)
+                        )
+                        Text(
+                            text = stringResource(R.string.notification_access_required),
+                            style = MaterialTheme.typography.titleMedium,
+                            fontWeight = FontWeight.SemiBold,
+                            color = MaterialTheme.colorScheme.onBackground
+                        )
+                    }
+                    Text(
+                        text = stringResource(R.string.notification_access_description),
+                        style = MaterialTheme.typography.bodyMedium,
+                        color = MaterialTheme.colorScheme.onSurfaceVariant
+                    )
+                }
+
+                Spacer(modifier = Modifier.height(12.dp))
             }
         }
-    }
 }
 
 @Composable
-private fun SettingsCard(
+private fun SettingsSection(
     icon: androidx.compose.ui.graphics.vector.ImageVector,
     title: String,
     content: @Composable () -> Unit
 ) {
-    Card(
+    Column(
         modifier = Modifier.fillMaxWidth(),
-        colors = CardDefaults.cardColors(
-            containerColor = MaterialTheme.colorScheme.surface
-        ),
-        shape = CardShape,
-        elevation = CardDefaults.cardElevation(defaultElevation = 0.dp)
+        verticalArrangement = Arrangement.spacedBy(12.dp)
     ) {
-        Column(
-            modifier = Modifier.padding(20.dp),
-            verticalArrangement = Arrangement.spacedBy(16.dp)
+        Row(
+            verticalAlignment = Alignment.CenterVertically,
+            horizontalArrangement = Arrangement.spacedBy(12.dp)
         ) {
-            Row(
-                verticalAlignment = Alignment.CenterVertically,
-                horizontalArrangement = Arrangement.spacedBy(12.dp)
+            Icon(
+                imageVector = icon,
+                contentDescription = null,
+                tint = MaterialTheme.colorScheme.primary,
+                modifier = Modifier.size(20.dp)
+            )
+            Text(
+                text = title,
+                style = MaterialTheme.typography.titleMedium,
+                fontWeight = FontWeight.SemiBold,
+                color = MaterialTheme.colorScheme.onBackground
+            )
+        }
+
+        Card(
+            modifier = Modifier.fillMaxWidth(),
+            colors = CardDefaults.cardColors(
+                containerColor = MaterialTheme.colorScheme.surface
+            ),
+            shape = CardShape,
+            elevation = CardDefaults.cardElevation(defaultElevation = 0.dp)
+        ) {
+            Column(
+                modifier = Modifier.padding(vertical = 8.dp),
+                verticalArrangement = Arrangement.spacedBy(4.dp)
             ) {
-                Icon(
-                    imageVector = icon,
-                    contentDescription = null,
-                    tint = MaterialTheme.colorScheme.primary,
-                    modifier = Modifier.height(24.dp)
-                )
-                Text(
-                    text = title,
-                    style = MaterialTheme.typography.titleLarge,
-                    fontWeight = FontWeight.SemiBold,
-                    color = MaterialTheme.colorScheme.onSurfaceVariant
-                )
+                content()
             }
-            content()
         }
     }
 }
@@ -192,7 +221,9 @@ private fun SettingToggle(
     onCheckedChange: (Boolean) -> Unit
 ) {
     Row(
-        modifier = Modifier.fillMaxWidth(),
+        modifier = Modifier
+            .fillMaxWidth()
+            .padding(horizontal = 20.dp, vertical = 12.dp),
         horizontalArrangement = Arrangement.SpaceBetween,
         verticalAlignment = Alignment.CenterVertically
     ) {
@@ -214,6 +245,7 @@ private fun SettingToggle(
     }
 }
 
+
 @Composable
 private fun UpdateSection(
     updateState: UpdateUiState,
@@ -223,7 +255,9 @@ private fun UpdateSection(
     when (updateState) {
         is UpdateUiState.Checking -> {
             Row(
-                modifier = Modifier.fillMaxWidth(),
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .padding(horizontal = 20.dp, vertical = 12.dp),
                 horizontalArrangement = Arrangement.SpaceBetween,
                 verticalAlignment = Alignment.CenterVertically
             ) {
@@ -241,6 +275,9 @@ private fun UpdateSection(
         is UpdateUiState.UpdateAvailable -> {
             val version = updateState.updateInfo.version
             Column(
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .padding(horizontal = 20.dp, vertical = 12.dp),
                 verticalArrangement = Arrangement.spacedBy(12.dp)
             ) {
                 Text(
@@ -267,7 +304,9 @@ private fun UpdateSection(
         is UpdateUiState.Downloading -> {
             val progress = updateState.progress
             Column(
-                modifier = Modifier.fillMaxWidth(),
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .padding(horizontal = 20.dp, vertical = 12.dp),
                 verticalArrangement = Arrangement.spacedBy(8.dp)
             ) {
                 Text(
@@ -279,7 +318,9 @@ private fun UpdateSection(
         }
         is UpdateUiState.UpToDate -> {
             Row(
-                modifier = Modifier.fillMaxWidth(),
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .padding(horizontal = 20.dp, vertical = 12.dp),
                 horizontalArrangement = Arrangement.SpaceBetween,
                 verticalAlignment = Alignment.CenterVertically
             ) {
@@ -300,7 +341,9 @@ private fun UpdateSection(
                 stringResource(updateState.messageResId, updateState.formatArgs.first())
             }
             Column(
-                modifier = Modifier.fillMaxWidth(),
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .padding(horizontal = 20.dp, vertical = 12.dp),
                 verticalArrangement = Arrangement.spacedBy(8.dp)
             ) {
                 Text(
@@ -318,7 +361,9 @@ private fun UpdateSection(
         }
         is UpdateUiState.Downloaded -> {
             Column(
-                modifier = Modifier.fillMaxWidth(),
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .padding(horizontal = 20.dp, vertical = 12.dp),
                 verticalArrangement = Arrangement.spacedBy(12.dp)
             ) {
                 Text(
@@ -344,7 +389,9 @@ private fun UpdateSection(
         }
         is UpdateUiState.NeedsPermission -> {
             Column(
-                modifier = Modifier.fillMaxWidth(),
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .padding(horizontal = 20.dp, vertical = 12.dp),
                 verticalArrangement = Arrangement.spacedBy(12.dp)
             ) {
                 Text(
@@ -369,7 +416,9 @@ private fun UpdateSection(
         }
         else -> {
             Row(
-                modifier = Modifier.fillMaxWidth(),
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .padding(horizontal = 20.dp, vertical = 12.dp),
                 horizontalArrangement = Arrangement.SpaceBetween,
                 verticalAlignment = Alignment.CenterVertically
             ) {
