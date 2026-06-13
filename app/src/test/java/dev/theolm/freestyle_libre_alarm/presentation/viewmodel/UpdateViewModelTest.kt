@@ -5,6 +5,7 @@ import dev.theolm.freestyle_libre_alarm.domain.model.UpdateInfo
 import dev.theolm.freestyle_libre_alarm.domain.repository.CheckUpdateResult
 import dev.theolm.freestyle_libre_alarm.domain.repository.SettingsRepository
 import dev.theolm.freestyle_libre_alarm.domain.repository.UpdateRepository
+import dev.theolm.freestyle_libre_alarm.domain.usecase.ShouldShowUpdate
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -26,6 +27,7 @@ class UpdateViewModelTest {
 
     private lateinit var fakeUpdateRepository: FakeUpdateRepository
     private lateinit var fakeSettingsRepository: FakeSettingsRepository
+    private lateinit var shouldShowUpdate: ShouldShowUpdate
     private lateinit var viewModel: UpdateViewModel
 
     @Before
@@ -33,7 +35,8 @@ class UpdateViewModelTest {
         Dispatchers.setMain(testDispatcher)
         fakeUpdateRepository = FakeUpdateRepository()
         fakeSettingsRepository = FakeSettingsRepository()
-        viewModel = UpdateViewModel(fakeUpdateRepository, fakeSettingsRepository)
+        shouldShowUpdate = ShouldShowUpdate(fakeSettingsRepository)
+        viewModel = UpdateViewModel(fakeUpdateRepository, fakeSettingsRepository, shouldShowUpdate)
     }
 
     @After

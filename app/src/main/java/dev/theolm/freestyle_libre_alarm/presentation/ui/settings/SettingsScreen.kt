@@ -73,7 +73,8 @@ fun SettingsScreen() {
     val updateViewModel: UpdateViewModel = viewModel(
         factory = UpdateViewModel.Factory(
             updateRepository = AppModule.provideUpdateRepository(context),
-            settingsRepository = AppModule.provideSettingsRepository(context)
+            settingsRepository = AppModule.provideSettingsRepository(context),
+            shouldShowUpdate = AppModule.provideShouldShowUpdate(context)
         )
     )
     val settings by viewModel.settings.collectAsState()
