@@ -54,9 +54,9 @@ import dev.theolm.freestyle_libre_alarm.presentation.viewmodel.SettingsViewModel
 import dev.theolm.freestyle_libre_alarm.presentation.viewmodel.UpdateUiState
 import dev.theolm.freestyle_libre_alarm.presentation.viewmodel.UpdateViewModel
 
-private const val MIN_THRESHOLD = 40f
-private const val MAX_THRESHOLD = 400f
-private const val THRESHOLD_GAP = 10
+private const val MinThreshold = 40f
+private const val MaxThreshold = 400f
+private const val ThresholdGap = 10
 
 private val CardShape = RoundedCornerShape(12.dp)
 private val ButtonShape = RoundedCornerShape(8.dp)
@@ -271,7 +271,7 @@ private fun SettingToggle(
 }
 
 
-private const val RANGE_SLIDER_STEPS = ((MAX_THRESHOLD - MIN_THRESHOLD) / 1f).toInt() - 1
+private const val RangeSliderSteps = ((MaxThreshold - MinThreshold) / 1f).toInt() - 1
 
 @Composable
 private fun ThresholdRangeSlider(
@@ -304,14 +304,14 @@ private fun ThresholdRangeSlider(
                 val lowMoved = newRange.start != localRange.start
                 if (lowMoved) {
                     val constrainedLow = newRange.start.coerceIn(
-                        MIN_THRESHOLD,
-                        (localRange.endInclusive - THRESHOLD_GAP).coerceAtMost(MAX_THRESHOLD)
+                        MinThreshold,
+                        (localRange.endInclusive - ThresholdGap).coerceAtMost(MaxThreshold)
                     )
                     localRange = constrainedLow..localRange.endInclusive
                 } else {
                     val constrainedHigh = newRange.endInclusive.coerceIn(
-                        (localRange.start + THRESHOLD_GAP).coerceAtLeast(MIN_THRESHOLD),
-                        MAX_THRESHOLD
+                        (localRange.start + ThresholdGap).coerceAtLeast(MinThreshold),
+                        MaxThreshold
                     )
                     localRange = localRange.start..constrainedHigh
                 }
@@ -320,8 +320,8 @@ private fun ThresholdRangeSlider(
                 onLowValueChangeFinished(localRange.start.toInt())
                 onHighValueChangeFinished(localRange.endInclusive.toInt())
             },
-            valueRange = MIN_THRESHOLD..MAX_THRESHOLD,
-            steps = RANGE_SLIDER_STEPS
+            valueRange = MinThreshold..MaxThreshold,
+            steps = RangeSliderSteps
         )
     }
 }
