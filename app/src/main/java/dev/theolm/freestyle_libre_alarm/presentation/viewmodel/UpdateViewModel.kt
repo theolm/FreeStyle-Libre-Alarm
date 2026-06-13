@@ -17,12 +17,11 @@ import dev.theolm.freestyle_libre_alarm.domain.model.UpdateInfo
 import dev.theolm.freestyle_libre_alarm.domain.repository.CheckUpdateResult
 import dev.theolm.freestyle_libre_alarm.domain.repository.SettingsRepository
 import dev.theolm.freestyle_libre_alarm.domain.repository.UpdateRepository
-import dev.theolm.freestyle_libre_alarm.domain.util.SemVerParser
+import dev.theolm.freestyle_libre_alarm.domain.usecase.ShouldShowUpdate
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
-import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.launch
 import java.io.File
 
@@ -39,7 +38,8 @@ sealed class UpdateUiState {
 
 class UpdateViewModel(
     private val updateRepository: UpdateRepository,
-    private val settingsRepository: SettingsRepository
+    private val settingsRepository: SettingsRepository,
+    private val shouldShowUpdate: ShouldShowUpdate
 ) : ViewModel() {
 
     private val logger = AppLogger.log
@@ -65,18 +65,7 @@ class UpdateViewModel(
             when (val result = updateRepository.checkForUpdate(currentVersion)) {
                 is CheckUpdateResult.Available -> {
                     logger.d { "Update available: ${result.info.version}" }
-                    val settings = settingsRepository.settings.first()
-                    val lastDismissed = settings.lastDismissedVersion
-
-                    val shouldShow = if (lastDismissed != null) {
-                        try {
-                            SemVerParser.isNewer(lastDismissed, result.info.version)
-                } catch (_: Exception) {
-                    true
-                }
-                    } else {
-                        true
-                    }
+                    val shouldShow = shouldShowUpdate(result.info.version)
 
                     if (shouldShow) {
                         logger.d { "Showing update available dialog" }
@@ -239,11 +228,12 @@ class UpdateViewModel(
 
     class Factory(
         private val updateRepository: UpdateRepository,
-        private val settingsRepository: SettingsRepository
+        private val settingsRepository: SettingsRepository,
+        private val shouldShowUpdate: ShouldShowUpdate
     ) : ViewModelProvider.Factory {
         @Suppress("UNCHECKED_CAST")
         override fun <T : ViewModel> create(modelClass: Class<T>): T {
-            return UpdateViewModel(updateRepository, settingsRepository) as T
+            return UpdateViewModel(updateRepository, settingsRepository, shouldShowUpdate) as T
         }
     }
 }

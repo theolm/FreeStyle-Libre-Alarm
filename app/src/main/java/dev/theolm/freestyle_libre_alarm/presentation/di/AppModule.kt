@@ -11,11 +11,16 @@ import dev.theolm.freestyle_libre_alarm.domain.repository.AlarmRepository
 import dev.theolm.freestyle_libre_alarm.domain.repository.GlucoseAlertRepository
 import dev.theolm.freestyle_libre_alarm.domain.repository.SettingsRepository
 import dev.theolm.freestyle_libre_alarm.domain.repository.UpdateRepository
+import dev.theolm.freestyle_libre_alarm.domain.usecase.ShouldShowUpdate
 
 object AppModule {
 
     fun provideSettingsRepository(context: Context): SettingsRepository {
         return SettingsRepositoryImpl(SettingsDataStore(context))
+    }
+
+    fun provideShouldShowUpdate(context: Context): ShouldShowUpdate {
+        return ShouldShowUpdate(provideSettingsRepository(context))
     }
 
     fun provideAlarmRepository(context: Context): AlarmRepository {

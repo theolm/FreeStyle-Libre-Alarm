@@ -1,9 +1,11 @@
 package dev.theolm.freestyle_libre_alarm.presentation
 
+import android.content.Intent
 import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.activity.enableEdgeToEdge
+import androidx.activity.viewModels
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
 import androidx.core.view.WindowCompat
@@ -36,6 +38,7 @@ import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.currentBackStackEntryAsState
 import androidx.navigation.compose.rememberNavController
+import dev.theolm.freestyle_libre_alarm.LibreConstants
 import dev.theolm.freestyle_libre_alarm.data.alarm.AlarmManager
 import dev.theolm.freestyle_libre_alarm.data.service.AlarmForegroundService
 import dev.theolm.freestyle_libre_alarm.presentation.di.AppModule
@@ -64,6 +67,15 @@ sealed class BottomNavItem(
 }
 
 class MainActivity : ComponentActivity() {
+
+    private val updateViewModel: UpdateViewModel by viewModels {
+        UpdateViewModel.Factory(
+            updateRepository = AppModule.provideUpdateRepository(this),
+            settingsRepository = AppModule.provideSettingsRepository(this),
+            shouldShowUpdate = AppModule.provideShouldShowUpdate(this)
+        )
+    }
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         enableEdgeToEdge()
@@ -73,15 +85,11 @@ class MainActivity : ComponentActivity() {
         AlarmForegroundService.start(this)
         AlarmManager.init(this)
 
+        handleUpdateIntent(intent)
+
         setContent {
             val settingsViewModel: SettingsViewModel = viewModel(
                 factory = SettingsViewModel.Factory(
-                    settingsRepository = AppModule.provideSettingsRepository(this)
-                )
-            )
-            val updateViewModel: UpdateViewModel = viewModel(
-                factory = UpdateViewModel.Factory(
-                    updateRepository = AppModule.provideUpdateRepository(this),
                     settingsRepository = AppModule.provideSettingsRepository(this)
                 )
             )
@@ -116,6 +124,17 @@ class MainActivity : ComponentActivity() {
                     )
                 }
             }
+        }
+    }
+
+    override fun onNewIntent(intent: Intent) {
+        super.onNewIntent(intent)
+        handleUpdateIntent(intent)
+    }
+
+    private fun handleUpdateIntent(intent: Intent?) {
+        if (intent?.getBooleanExtra(LibreConstants.EXTRA_SHOW_UPDATE, false) == true) {
+            updateViewModel.checkForUpdate(isAutomatic = true)
         }
     }
 }
