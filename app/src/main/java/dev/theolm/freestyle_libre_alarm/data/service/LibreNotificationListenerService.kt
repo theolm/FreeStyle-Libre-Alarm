@@ -11,8 +11,8 @@ import dev.theolm.freestyle_libre_alarm.domain.repository.GlucoseAlertRepository
 import dev.theolm.freestyle_libre_alarm.domain.repository.SettingsRepository
 import dev.theolm.freestyle_libre_alarm.domain.usecase.GlucoseThresholdEvaluator
 import dev.theolm.freestyle_libre_alarm.domain.util.GlucoseValueParser
-import dev.theolm.freestyle_libre_alarm.presentation.di.AppModule
 import kotlinx.coroutines.CoroutineScope
+import org.koin.android.ext.android.inject
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.SupervisorJob
 import kotlinx.coroutines.flow.first
@@ -21,14 +21,12 @@ import kotlinx.coroutines.launch
 class LibreNotificationListenerService : NotificationListenerService() {
 
     private val serviceScope = CoroutineScope(SupervisorJob() + Dispatchers.IO)
-    private lateinit var glucoseAlertRepository: GlucoseAlertRepository
-    private lateinit var settingsRepository: SettingsRepository
+    private val glucoseAlertRepository: GlucoseAlertRepository by inject()
+    private val settingsRepository: SettingsRepository by inject()
     private val thresholdEvaluator = GlucoseThresholdEvaluator()
 
     override fun onCreate() {
         super.onCreate()
-        glucoseAlertRepository = AppModule.provideGlucoseAlertRepository(this)
-        settingsRepository = AppModule.provideSettingsRepository(this)
         AlarmManager.init(this)
     }
 
@@ -36,7 +34,7 @@ class LibreNotificationListenerService : NotificationListenerService() {
         super.onNotificationPosted(sbn)
 
         // Only process notifications from FreeStyle Libre app
-        if (sbn.packageName != TARGET_PACKAGE) {
+        if (!sbn.packageName.contains(FREESTYLE_LIBRE_PREFIX, ignoreCase = true)) {
             return
         }
 
@@ -116,7 +114,7 @@ class LibreNotificationListenerService : NotificationListenerService() {
     }
 
     companion object {
-        const val TARGET_PACKAGE = "com.freestylelibre.app.br"
+        private const val FREESTYLE_LIBRE_PREFIX = "freestylelibre"
 
         fun isEnabled(context: Context): Boolean {
             val componentName = ComponentName(context, LibreNotificationListenerService::class.java)

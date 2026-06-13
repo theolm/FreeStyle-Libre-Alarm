@@ -15,10 +15,6 @@ class SettingsRepositoryImpl(
         dataStore.updateAlarmEnabled(enabled)
     }
 
-    override suspend fun updateLibrePackageName(packageName: String) {
-        dataStore.updateLibrePackageName(packageName)
-    }
-
     override suspend fun updateLowGlucoseEnabled(enabled: Boolean) {
         dataStore.updateLowGlucoseEnabled(enabled)
     }

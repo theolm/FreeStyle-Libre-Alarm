@@ -6,7 +6,6 @@ import kotlinx.coroutines.flow.Flow
 interface SettingsRepository {
     val settings: Flow<AppSettings>
     suspend fun updateAlarmEnabled(enabled: Boolean)
-    suspend fun updateLibrePackageName(packageName: String)
     suspend fun updateLowGlucoseEnabled(enabled: Boolean)
     suspend fun updateHighGlucoseEnabled(enabled: Boolean)
     suspend fun updateDarkModeEnabled(enabled: Boolean)

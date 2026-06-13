@@ -19,7 +19,6 @@ class SettingsDataStore(private val context: Context) {
 
     private object Keys {
         val ALARM_ENABLED = booleanPreferencesKey("alarm_enabled")
-        val LIBRE_PACKAGE_NAME = stringPreferencesKey("libre_package_name")
         val LOW_GLUCOSE_ENABLED = booleanPreferencesKey("low_glucose_enabled")
         val HIGH_GLUCOSE_ENABLED = booleanPreferencesKey("high_glucose_enabled")
         val DARK_MODE_ENABLED = booleanPreferencesKey("dark_mode_enabled")
@@ -33,7 +32,6 @@ class SettingsDataStore(private val context: Context) {
     val settings: Flow<AppSettings> = context.dataStore.data.map { preferences ->
         AppSettings(
             isAlarmEnabled = preferences[Keys.ALARM_ENABLED] ?: true,
-            librePackageName = preferences[Keys.LIBRE_PACKAGE_NAME] ?: "com.freestylelibre.app",
             isLowGlucoseEnabled = preferences[Keys.LOW_GLUCOSE_ENABLED] ?: true,
             isHighGlucoseEnabled = preferences[Keys.HIGH_GLUCOSE_ENABLED] ?: true,
             isDarkModeEnabled = preferences[Keys.DARK_MODE_ENABLED] ?: false,
@@ -48,12 +46,6 @@ class SettingsDataStore(private val context: Context) {
     suspend fun updateAlarmEnabled(enabled: Boolean) {
         context.dataStore.edit { preferences ->
             preferences[Keys.ALARM_ENABLED] = enabled
-        }
-    }
-
-    suspend fun updateLibrePackageName(packageName: String) {
-        context.dataStore.edit { preferences ->
-            preferences[Keys.LIBRE_PACKAGE_NAME] = packageName
         }
     }
 

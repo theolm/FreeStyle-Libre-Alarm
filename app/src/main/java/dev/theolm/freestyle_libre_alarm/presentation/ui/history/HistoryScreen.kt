@@ -29,15 +29,13 @@ import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
-import androidx.lifecycle.viewmodel.compose.viewModel
 import dev.theolm.freestyle_libre_alarm.R
 import dev.theolm.freestyle_libre_alarm.domain.model.GlucoseAlert
-import dev.theolm.freestyle_libre_alarm.presentation.di.AppModule
 import dev.theolm.freestyle_libre_alarm.presentation.viewmodel.HistoryViewModel
+import org.koin.androidx.compose.koinViewModel
 import dev.theolm.freestyle_libre_alarm.presentation.ui.theme.Ink
 import java.text.SimpleDateFormat
 import java.util.Date
@@ -49,12 +47,7 @@ private val BadgeShape = RoundedCornerShape(4.dp)
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun HistoryScreen() {
-    val context = LocalContext.current
-    val viewModel: HistoryViewModel = viewModel(
-        factory = HistoryViewModel.Factory(
-            glucoseAlertRepository = AppModule.provideGlucoseAlertRepository(context)
-        )
-    )
+    val viewModel: HistoryViewModel = koinViewModel()
     val glucoseAlerts by viewModel.glucoseAlerts.collectAsState()
 
     Scaffold(

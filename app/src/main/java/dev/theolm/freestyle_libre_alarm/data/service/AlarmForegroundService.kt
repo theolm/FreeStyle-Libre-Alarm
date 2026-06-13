@@ -21,8 +21,8 @@ import dev.theolm.freestyle_libre_alarm.domain.repository.CheckUpdateResult
 import dev.theolm.freestyle_libre_alarm.domain.repository.UpdateRepository
 import dev.theolm.freestyle_libre_alarm.domain.usecase.ShouldShowUpdate
 import dev.theolm.freestyle_libre_alarm.presentation.MainActivity
-import dev.theolm.freestyle_libre_alarm.presentation.di.AppModule
 import kotlinx.coroutines.CoroutineScope
+import org.koin.android.ext.android.inject
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.SupervisorJob
 import kotlinx.coroutines.cancel
@@ -48,16 +48,13 @@ class AlarmForegroundService : Service() {
     private val logger = AppLogger.log
     private val serviceScope = CoroutineScope(SupervisorJob() + Dispatchers.IO)
 
-    private lateinit var updateRepository: UpdateRepository
-    private lateinit var shouldShowUpdate: ShouldShowUpdate
+    private val updateRepository: UpdateRepository by inject()
+    private val shouldShowUpdate: ShouldShowUpdate by inject()
 
     override fun onCreate() {
         super.onCreate()
         createNotificationChannel()
         createUpdateNotificationChannel()
-
-        updateRepository = AppModule.provideUpdateRepository(applicationContext)
-        shouldShowUpdate = AppModule.provideShouldShowUpdate(applicationContext)
 
         startPeriodicUpdateCheck()
     }

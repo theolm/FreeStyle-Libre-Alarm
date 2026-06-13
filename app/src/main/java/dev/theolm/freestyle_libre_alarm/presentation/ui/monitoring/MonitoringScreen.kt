@@ -44,12 +44,11 @@ import androidx.compose.ui.unit.dp
 import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.LifecycleEventObserver
 import androidx.lifecycle.compose.LocalLifecycleOwner
-import androidx.lifecycle.viewmodel.compose.viewModel
 import dev.theolm.freestyle_libre_alarm.R
 import dev.theolm.freestyle_libre_alarm.data.alarm.AlarmManager
 import dev.theolm.freestyle_libre_alarm.data.service.LibreNotificationListenerService
-import dev.theolm.freestyle_libre_alarm.presentation.di.AppModule
 import dev.theolm.freestyle_libre_alarm.presentation.viewmodel.MonitoringViewModel
+import org.koin.androidx.compose.koinViewModel
 
 private val CardShape = RoundedCornerShape(12.dp)
 private val ButtonShape = RoundedCornerShape(8.dp)
@@ -59,12 +58,7 @@ private val ButtonShape = RoundedCornerShape(8.dp)
 fun MonitoringScreen() {
     val context = LocalContext.current
     val lifecycleOwner = LocalLifecycleOwner.current
-    val viewModel: MonitoringViewModel = viewModel(
-        factory = MonitoringViewModel.Factory(
-            context = context,
-            settingsRepository = AppModule.provideSettingsRepository(context)
-        )
-    )
+    val viewModel: MonitoringViewModel = koinViewModel()
     val uiState by viewModel.uiState.collectAsState()
     val isAlarmPlaying by AlarmManager.isAlarmPlaying.collectAsState()
 

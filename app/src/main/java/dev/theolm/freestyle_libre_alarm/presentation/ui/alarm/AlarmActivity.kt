@@ -47,8 +47,9 @@ import androidx.lifecycle.repeatOnLifecycle
 import dev.theolm.freestyle_libre_alarm.R
 import dev.theolm.freestyle_libre_alarm.data.alarm.AlarmManager
 import dev.theolm.freestyle_libre_alarm.domain.model.AppSettings
-import dev.theolm.freestyle_libre_alarm.presentation.di.AppModule
+import dev.theolm.freestyle_libre_alarm.domain.repository.SettingsRepository
 import dev.theolm.freestyle_libre_alarm.presentation.ui.theme.Background
+import org.koin.android.ext.android.inject
 import dev.theolm.freestyle_libre_alarm.presentation.ui.theme.DarkSurfaceElevated
 import dev.theolm.freestyle_libre_alarm.presentation.ui.theme.FreeStyleLibreAlarmTheme
 import kotlinx.coroutines.Dispatchers
@@ -59,6 +60,7 @@ private val SnoozeButtonShape = RoundedCornerShape(8.dp)
 
 class AlarmActivity : ComponentActivity() {
 
+    private val settingsRepository: SettingsRepository by inject()
     private val dismissReceiver = object : BroadcastReceiver() {
         override fun onReceive(context: Context, intent: Intent) {
             if (intent.action == AlarmManager.ACTION_DISMISS_ALARM) {
@@ -78,7 +80,6 @@ class AlarmActivity : ComponentActivity() {
 
         registerDismissReceiver()
 
-        val settingsRepository = AppModule.provideSettingsRepository(this)
         lifecycleScope.launch {
             repeatOnLifecycle(Lifecycle.State.STARTED) {
                 settingsRepository.settings.collect { newSettings ->
@@ -126,7 +127,6 @@ class AlarmActivity : ComponentActivity() {
     private fun snoozeAlarm(minutes: Int) {
         AlarmManager.stopAlarm()
 
-        val settingsRepository = AppModule.provideSettingsRepository(this)
         val endTime = System.currentTimeMillis() + (minutes * 60 * 1000)
 
         lifecycleScope.launch(Dispatchers.IO) {
