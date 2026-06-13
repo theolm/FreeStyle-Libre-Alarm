@@ -31,8 +31,8 @@ android {
         applicationId = "dev.theolm.freestyle_libre_alarm"
         minSdk = 24
         targetSdk = 36
-        versionCode = 5
-        versionName = "v0.0.5"
+        versionCode = 6
+        versionName = "v0.0.6"
 
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
     }
