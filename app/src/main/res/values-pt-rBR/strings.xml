@@ -91,4 +91,10 @@
     <string name="service_notification_title">Monitoramento Ativo</string>
     <string name="service_notification_text">Monitorando notificações do FreeStyle Libre</string>
     <string name="alarm_foreground_service_description">Executa o serviço de alarme em primeiro plano para garantir que o alarme do FreeStyle Libre toque mesmo quando o app está em segundo plano.</string>
+
+    <!-- Update Notification -->
+    <string name="update_channel_name">Atualizações do app</string>
+    <string name="update_channel_description">Notificações sobre novas versões do FreeStyle Libre Alarm</string>
+    <string name="update_notification_title">Atualização disponível</string>
+    <string name="update_notification_body">FreeStyle Libre Alarm %1$s está pronto para instalar</string>
 </resources>
