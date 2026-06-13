@@ -7,5 +7,8 @@ data class AppSettings(
     val isHighGlucoseEnabled: Boolean = true,
     val isDarkModeEnabled: Boolean = false,
     val snoozeEndTime: Long = 0L,
-    val lastDismissedVersion: String? = null
+    val lastDismissedVersion: String? = null,
+    val useCustomThresholds: Boolean = false,
+    val lowThresholdMgDl: Int = 70,
+    val highThresholdMgDl: Int = 180
 )

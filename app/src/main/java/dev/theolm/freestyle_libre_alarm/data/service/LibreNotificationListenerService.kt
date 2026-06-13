@@ -9,6 +9,8 @@ import dev.theolm.freestyle_libre_alarm.data.alarm.AlarmManager
 import dev.theolm.freestyle_libre_alarm.domain.model.GlucoseAlert
 import dev.theolm.freestyle_libre_alarm.domain.repository.GlucoseAlertRepository
 import dev.theolm.freestyle_libre_alarm.domain.repository.SettingsRepository
+import dev.theolm.freestyle_libre_alarm.domain.usecase.GlucoseThresholdEvaluator
+import dev.theolm.freestyle_libre_alarm.domain.util.GlucoseValueParser
 import dev.theolm.freestyle_libre_alarm.presentation.di.AppModule
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
@@ -21,6 +23,7 @@ class LibreNotificationListenerService : NotificationListenerService() {
     private val serviceScope = CoroutineScope(SupervisorJob() + Dispatchers.IO)
     private lateinit var glucoseAlertRepository: GlucoseAlertRepository
     private lateinit var settingsRepository: SettingsRepository
+    private val thresholdEvaluator = GlucoseThresholdEvaluator()
 
     override fun onCreate() {
         super.onCreate()
@@ -39,14 +42,15 @@ class LibreNotificationListenerService : NotificationListenerService() {
 
         val key = sbn.key
         val type = when {
-            key.contains("HighGlucose", ignoreCase = true) -> GlucoseType.HIGH
-            key.contains("LowGlucose", ignoreCase = true) -> GlucoseType.LOW
+            key.contains("HighGlucose", ignoreCase = true) -> GlucoseThresholdEvaluator.GlucoseType.HIGH
+            key.contains("LowGlucose", ignoreCase = true) -> GlucoseThresholdEvaluator.GlucoseType.LOW
             else -> return // Ignora notificacoes que nao sao alarme de glicose
         }
 
         serviceScope.launch {
             try {
-                glucoseAlertRepository.insertAlert(createGlucoseAlert(sbn))
+                val glucoseAlert = createGlucoseAlert(sbn)
+                glucoseAlertRepository.insertAlert(glucoseAlert)
 
                 if (AlarmManager.isAlarmPlaying.value) return@launch
 
@@ -59,13 +63,13 @@ class LibreNotificationListenerService : NotificationListenerService() {
                         return@launch
                     }
 
-                    when (type) {
-                        GlucoseType.HIGH -> if (settings.isHighGlucoseEnabled) {
-                            AlarmManager.triggerAlarm()
-                        }
-                        GlucoseType.LOW -> if (settings.isLowGlucoseEnabled) {
-                            AlarmManager.triggerAlarm()
-                        }
+                    val shouldTrigger = thresholdEvaluator(
+                        value = glucoseAlert.glucoseValueMgDl,
+                        type = type,
+                        settings = settings
+                    )
+                    if (shouldTrigger) {
+                        AlarmManager.triggerAlarm()
                     }
                 }
             } catch (e: Exception) {
@@ -92,7 +96,8 @@ class LibreNotificationListenerService : NotificationListenerService() {
             else -> "UNKNOWN"
         }
 
-        val (glucoseValue, trend) = parseGlucoseData(rawText)
+        val glucoseValue = GlucoseValueParser.parse(rawText)
+        val trend = parseTrend(rawText)
 
         return GlucoseAlert(
             type = type,
@@ -104,22 +109,10 @@ class LibreNotificationListenerService : NotificationListenerService() {
         )
     }
 
-    @Suppress("ReturnCount")
-    private fun parseGlucoseData(text: String?): Pair<Int?, String?> {
-        if (text.isNullOrBlank()) return null to null
-
-        val regex = Regex("""(\d+)(?:mg/dL)?\s*([↑↓→])?""", RegexOption.IGNORE_CASE)
-        val match = regex.find(text.trim())
-        if (match == null) return null to null
-
-        val value = match.groupValues[1].toIntOrNull()
-        val trend = match.groupValues[2].ifBlank { null }
-        return value to trend
-    }
-
-    private enum class GlucoseType {
-        HIGH,
-        LOW
+    private fun parseTrend(text: String?): String? {
+        if (text.isNullOrBlank()) return null
+        val match = Regex("""[↑↓→]""").find(text)
+        return match?.value
     }
 
     companion object {

@@ -1,6 +1,7 @@
 package dev.theolm.freestyle_libre_alarm.presentation.ui.settings
 
 import android.content.Context
+import androidx.compose.animation.AnimatedVisibility
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
@@ -27,6 +28,7 @@ import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Scaffold
+import androidx.compose.material3.Slider
 import androidx.compose.material3.Switch
 import androidx.compose.material3.SwitchDefaults
 import androidx.compose.material3.Text
@@ -36,6 +38,9 @@ import androidx.compose.material3.TopAppBarDefaults
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableFloatStateOf
+import androidx.compose.runtime.remember
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
@@ -48,6 +53,10 @@ import dev.theolm.freestyle_libre_alarm.presentation.di.AppModule
 import dev.theolm.freestyle_libre_alarm.presentation.viewmodel.SettingsViewModel
 import dev.theolm.freestyle_libre_alarm.presentation.viewmodel.UpdateUiState
 import dev.theolm.freestyle_libre_alarm.presentation.viewmodel.UpdateViewModel
+
+private const val MIN_THRESHOLD = 40f
+private const val MAX_THRESHOLD = 400f
+private const val THRESHOLD_GAP = 10
 
 private val CardShape = RoundedCornerShape(12.dp)
 private val ButtonShape = RoundedCornerShape(8.dp)
@@ -111,6 +120,32 @@ fun SettingsScreen() {
                         checked = settings.isHighGlucoseEnabled,
                         onCheckedChange = { viewModel.updateHighGlucoseEnabled(it) }
                     )
+                    SettingToggle(
+                        label = stringResource(R.string.use_custom_thresholds),
+                        checked = settings.useCustomThresholds,
+                        onCheckedChange = { viewModel.updateUseCustomThresholds(it) }
+                    )
+                    AnimatedVisibility(visible = settings.useCustomThresholds) {
+                        Column(
+                            modifier = Modifier
+                                .fillMaxWidth()
+                                .padding(horizontal = 20.dp, vertical = 12.dp),
+                            verticalArrangement = Arrangement.spacedBy(16.dp)
+                        ) {
+                            ThresholdSlider(
+                                label = stringResource(R.string.low_glucose_threshold),
+                                value = settings.lowThresholdMgDl,
+                                valueRange = MIN_THRESHOLD..(settings.highThresholdMgDl - THRESHOLD_GAP).toFloat(),
+                                onValueChangeFinished = { viewModel.updateLowThresholdMgDl(it.toInt()) }
+                            )
+                            ThresholdSlider(
+                                label = stringResource(R.string.high_glucose_threshold),
+                                value = settings.highThresholdMgDl,
+                                valueRange = (settings.lowThresholdMgDl + THRESHOLD_GAP).toFloat()..MAX_THRESHOLD,
+                                onValueChangeFinished = { viewModel.updateHighThresholdMgDl(it.toInt()) }
+                            )
+                        }
+                    }
                 }
 
                 SettingsSection(
@@ -245,6 +280,35 @@ private fun SettingToggle(
     }
 }
 
+
+@Composable
+private fun ThresholdSlider(
+    label: String,
+    value: Int,
+    valueRange: ClosedFloatingPointRange<Float>,
+    onValueChangeFinished: (Float) -> Unit,
+    modifier: Modifier = Modifier
+) {
+    var localValue by remember(value) { mutableFloatStateOf(value.toFloat()) }
+
+    Column(
+        modifier = modifier.fillMaxWidth(),
+        verticalArrangement = Arrangement.spacedBy(4.dp)
+    ) {
+        Text(
+            text = stringResource(R.string.threshold_value_label, label, localValue.toInt()),
+            style = MaterialTheme.typography.bodyLarge,
+            color = MaterialTheme.colorScheme.onSurfaceVariant
+        )
+        Slider(
+            value = localValue,
+            onValueChange = { localValue = it },
+            onValueChangeFinished = { onValueChangeFinished(localValue) },
+            valueRange = valueRange,
+            steps = (valueRange.endInclusive - valueRange.start).toInt() - 1
+        )
+    }
+}
 
 @Composable
 private fun UpdateSection(

@@ -51,6 +51,24 @@ class SettingsViewModel(
         }
     }
 
+    fun updateUseCustomThresholds(enabled: Boolean) {
+        viewModelScope.launch {
+            settingsRepository.updateUseCustomThresholds(enabled)
+        }
+    }
+
+    fun updateLowThresholdMgDl(threshold: Int) {
+        viewModelScope.launch {
+            settingsRepository.updateLowThresholdMgDl(threshold)
+        }
+    }
+
+    fun updateHighThresholdMgDl(threshold: Int) {
+        viewModelScope.launch {
+            settingsRepository.updateHighThresholdMgDl(threshold)
+        }
+    }
+
     class Factory(
         private val settingsRepository: SettingsRepository
     ) : ViewModelProvider.Factory {
