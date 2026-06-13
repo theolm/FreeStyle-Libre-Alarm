@@ -39,6 +39,8 @@
     <string name="monitoring_types">Monitoring Types</string>
     <string name="monitor_low_glucose">Monitor Low Glucose</string>
     <string name="monitor_high_glucose">Monitor High Glucose</string>
+    <string name="use_custom_thresholds">Use custom thresholds</string>
+    <string name="threshold_range_label">%1$d — %2$d mg/dL</string>
     <string name="appearance">Appearance</string>
     <string name="dark_mode">Dark Mode</string>
     <string name="update_section">Update</string>

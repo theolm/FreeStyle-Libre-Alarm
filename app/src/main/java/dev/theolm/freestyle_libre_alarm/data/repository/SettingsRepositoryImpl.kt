@@ -38,4 +38,16 @@ class SettingsRepositoryImpl(
     override suspend fun updateLastDismissedVersion(version: String?) {
         dataStore.updateLastDismissedVersion(version)
     }
+
+    override suspend fun updateUseCustomThresholds(enabled: Boolean) {
+        dataStore.updateUseCustomThresholds(enabled)
+    }
+
+    override suspend fun updateLowThresholdMgDl(threshold: Int) {
+        dataStore.updateLowThresholdMgDl(threshold)
+    }
+
+    override suspend fun updateHighThresholdMgDl(threshold: Int) {
+        dataStore.updateHighThresholdMgDl(threshold)
+    }
 }

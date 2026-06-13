@@ -1,6 +1,7 @@
 package dev.theolm.freestyle_libre_alarm.presentation.ui.settings
 
 import android.content.Context
+import androidx.compose.animation.AnimatedVisibility
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
@@ -26,6 +27,7 @@ import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.RangeSlider
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Switch
 import androidx.compose.material3.SwitchDefaults
@@ -36,6 +38,9 @@ import androidx.compose.material3.TopAppBarDefaults
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
@@ -48,6 +53,10 @@ import dev.theolm.freestyle_libre_alarm.presentation.di.AppModule
 import dev.theolm.freestyle_libre_alarm.presentation.viewmodel.SettingsViewModel
 import dev.theolm.freestyle_libre_alarm.presentation.viewmodel.UpdateUiState
 import dev.theolm.freestyle_libre_alarm.presentation.viewmodel.UpdateViewModel
+
+private const val MIN_THRESHOLD = 40f
+private const val MAX_THRESHOLD = 400f
+private const val THRESHOLD_GAP = 10
 
 private val CardShape = RoundedCornerShape(12.dp)
 private val ButtonShape = RoundedCornerShape(8.dp)
@@ -111,6 +120,22 @@ fun SettingsScreen() {
                         checked = settings.isHighGlucoseEnabled,
                         onCheckedChange = { viewModel.updateHighGlucoseEnabled(it) }
                     )
+                    SettingToggle(
+                        label = stringResource(R.string.use_custom_thresholds),
+                        checked = settings.useCustomThresholds,
+                        onCheckedChange = { viewModel.updateUseCustomThresholds(it) }
+                    )
+                    AnimatedVisibility(visible = settings.useCustomThresholds) {
+                        ThresholdRangeSlider(
+                            lowValue = settings.lowThresholdMgDl,
+                            highValue = settings.highThresholdMgDl,
+                            onLowValueChangeFinished = { viewModel.updateLowThresholdMgDl(it) },
+                            onHighValueChangeFinished = { viewModel.updateHighThresholdMgDl(it) },
+                            modifier = Modifier
+                                .fillMaxWidth()
+                                .padding(horizontal = 20.dp, vertical = 12.dp)
+                        )
+                    }
                 }
 
                 SettingsSection(
@@ -245,6 +270,61 @@ private fun SettingToggle(
     }
 }
 
+
+private const val RANGE_SLIDER_STEPS = ((MAX_THRESHOLD - MIN_THRESHOLD) / 1f).toInt() - 1
+
+@Composable
+private fun ThresholdRangeSlider(
+    lowValue: Int,
+    highValue: Int,
+    onLowValueChangeFinished: (Int) -> Unit,
+    onHighValueChangeFinished: (Int) -> Unit,
+    modifier: Modifier = Modifier
+) {
+    var localRange by remember(lowValue, highValue) {
+        mutableStateOf(lowValue.toFloat()..highValue.toFloat())
+    }
+
+    Column(
+        modifier = modifier,
+        verticalArrangement = Arrangement.spacedBy(4.dp)
+    ) {
+        Text(
+            text = stringResource(
+                R.string.threshold_range_label,
+                localRange.start.toInt(),
+                localRange.endInclusive.toInt()
+            ),
+            style = MaterialTheme.typography.bodyLarge,
+            color = MaterialTheme.colorScheme.onSurfaceVariant
+        )
+        RangeSlider(
+            value = localRange,
+            onValueChange = { newRange ->
+                val lowMoved = newRange.start != localRange.start
+                if (lowMoved) {
+                    val constrainedLow = newRange.start.coerceIn(
+                        MIN_THRESHOLD,
+                        (localRange.endInclusive - THRESHOLD_GAP).coerceAtMost(MAX_THRESHOLD)
+                    )
+                    localRange = constrainedLow..localRange.endInclusive
+                } else {
+                    val constrainedHigh = newRange.endInclusive.coerceIn(
+                        (localRange.start + THRESHOLD_GAP).coerceAtLeast(MIN_THRESHOLD),
+                        MAX_THRESHOLD
+                    )
+                    localRange = localRange.start..constrainedHigh
+                }
+            },
+            onValueChangeFinished = {
+                onLowValueChangeFinished(localRange.start.toInt())
+                onHighValueChangeFinished(localRange.endInclusive.toInt())
+            },
+            valueRange = MIN_THRESHOLD..MAX_THRESHOLD,
+            steps = RANGE_SLIDER_STEPS
+        )
+    }
+}
 
 @Composable
 private fun UpdateSection(

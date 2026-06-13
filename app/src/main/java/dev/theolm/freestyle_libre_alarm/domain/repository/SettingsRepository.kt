@@ -12,4 +12,7 @@ interface SettingsRepository {
     suspend fun updateDarkModeEnabled(enabled: Boolean)
     suspend fun updateSnoozeEndTime(endTime: Long)
     suspend fun updateLastDismissedVersion(version: String?)
+    suspend fun updateUseCustomThresholds(enabled: Boolean)
+    suspend fun updateLowThresholdMgDl(threshold: Int)
+    suspend fun updateHighThresholdMgDl(threshold: Int)
 }

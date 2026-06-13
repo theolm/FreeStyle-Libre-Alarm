@@ -4,9 +4,10 @@ import android.content.Context
 import androidx.datastore.core.DataStore
 import androidx.datastore.preferences.core.Preferences
 import androidx.datastore.preferences.core.booleanPreferencesKey
-import androidx.datastore.preferences.core.stringPreferencesKey
-import androidx.datastore.preferences.core.longPreferencesKey
 import androidx.datastore.preferences.core.edit
+import androidx.datastore.preferences.core.intPreferencesKey
+import androidx.datastore.preferences.core.longPreferencesKey
+import androidx.datastore.preferences.core.stringPreferencesKey
 import androidx.datastore.preferences.preferencesDataStore
 import dev.theolm.freestyle_libre_alarm.domain.model.AppSettings
 import kotlinx.coroutines.flow.Flow
@@ -24,6 +25,9 @@ class SettingsDataStore(private val context: Context) {
         val DARK_MODE_ENABLED = booleanPreferencesKey("dark_mode_enabled")
         val SNOOZE_END_TIME = longPreferencesKey("snooze_end_time")
         val LAST_DISMISSED_VERSION = stringPreferencesKey("last_dismissed_version")
+        val USE_CUSTOM_THRESHOLDS = booleanPreferencesKey("use_custom_thresholds")
+        val LOW_THRESHOLD_MG_DL = intPreferencesKey("low_threshold_mg_dl")
+        val HIGH_THRESHOLD_MG_DL = intPreferencesKey("high_threshold_mg_dl")
     }
 
     val settings: Flow<AppSettings> = context.dataStore.data.map { preferences ->
@@ -34,7 +38,10 @@ class SettingsDataStore(private val context: Context) {
             isHighGlucoseEnabled = preferences[Keys.HIGH_GLUCOSE_ENABLED] ?: true,
             isDarkModeEnabled = preferences[Keys.DARK_MODE_ENABLED] ?: false,
             snoozeEndTime = preferences[Keys.SNOOZE_END_TIME] ?: 0L,
-            lastDismissedVersion = preferences[Keys.LAST_DISMISSED_VERSION]
+            lastDismissedVersion = preferences[Keys.LAST_DISMISSED_VERSION],
+            useCustomThresholds = preferences[Keys.USE_CUSTOM_THRESHOLDS] ?: false,
+            lowThresholdMgDl = preferences[Keys.LOW_THRESHOLD_MG_DL] ?: 70,
+            highThresholdMgDl = preferences[Keys.HIGH_THRESHOLD_MG_DL] ?: 180
         )
     }
 
@@ -81,6 +88,24 @@ class SettingsDataStore(private val context: Context) {
             } else {
                 preferences.remove(Keys.LAST_DISMISSED_VERSION)
             }
+        }
+    }
+
+    suspend fun updateUseCustomThresholds(enabled: Boolean) {
+        context.dataStore.edit { preferences ->
+            preferences[Keys.USE_CUSTOM_THRESHOLDS] = enabled
+        }
+    }
+
+    suspend fun updateLowThresholdMgDl(threshold: Int) {
+        context.dataStore.edit { preferences ->
+            preferences[Keys.LOW_THRESHOLD_MG_DL] = threshold
+        }
+    }
+
+    suspend fun updateHighThresholdMgDl(threshold: Int) {
+        context.dataStore.edit { preferences ->
+            preferences[Keys.HIGH_THRESHOLD_MG_DL] = threshold
         }
     }
 }

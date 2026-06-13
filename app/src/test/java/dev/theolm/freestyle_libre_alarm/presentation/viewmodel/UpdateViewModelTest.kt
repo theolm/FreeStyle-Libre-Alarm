@@ -208,5 +208,8 @@ class UpdateViewModelTest {
             lastDismissedVersion = version
             settingsFlow.value = settingsFlow.value.copy(lastDismissedVersion = version)
         }
+        override suspend fun updateUseCustomThresholds(enabled: Boolean) = Unit
+        override suspend fun updateLowThresholdMgDl(threshold: Int) = Unit
+        override suspend fun updateHighThresholdMgDl(threshold: Int) = Unit
     }
 }
