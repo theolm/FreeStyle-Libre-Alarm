@@ -2,7 +2,6 @@ package dev.theolm.freestyle_libre_alarm.presentation.viewmodel
 
 import android.content.Context
 import androidx.lifecycle.ViewModel
-import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.viewModelScope
 import dev.theolm.freestyle_libre_alarm.data.alarm.AlarmManager
 import dev.theolm.freestyle_libre_alarm.domain.model.AppSettings
@@ -43,14 +42,4 @@ class MonitoringViewModel(
     data class MonitoringUiState(
         val settings: AppSettings = AppSettings()
     )
-
-    class Factory(
-        private val context: Context,
-        private val settingsRepository: SettingsRepository
-    ) : ViewModelProvider.Factory {
-        @Suppress("UNCHECKED_CAST")
-        override fun <T : ViewModel> create(modelClass: Class<T>): T {
-            return MonitoringViewModel(context, settingsRepository) as T
-        }
-    }
 }

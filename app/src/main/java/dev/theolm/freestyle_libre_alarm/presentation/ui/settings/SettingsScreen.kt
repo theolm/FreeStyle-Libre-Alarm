@@ -47,12 +47,11 @@ import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
-import androidx.lifecycle.viewmodel.compose.viewModel
 import dev.theolm.freestyle_libre_alarm.R
-import dev.theolm.freestyle_libre_alarm.presentation.di.AppModule
 import dev.theolm.freestyle_libre_alarm.presentation.viewmodel.SettingsViewModel
 import dev.theolm.freestyle_libre_alarm.presentation.viewmodel.UpdateUiState
 import dev.theolm.freestyle_libre_alarm.presentation.viewmodel.UpdateViewModel
+import org.koin.androidx.compose.koinViewModel
 
 private const val MinThreshold = 40f
 private const val MaxThreshold = 400f
@@ -65,18 +64,8 @@ private val ButtonShape = RoundedCornerShape(8.dp)
 @Composable
 fun SettingsScreen() {
     val context = LocalContext.current
-    val viewModel: SettingsViewModel = viewModel(
-        factory = SettingsViewModel.Factory(
-            settingsRepository = AppModule.provideSettingsRepository(context)
-        )
-    )
-    val updateViewModel: UpdateViewModel = viewModel(
-        factory = UpdateViewModel.Factory(
-            updateRepository = AppModule.provideUpdateRepository(context),
-            settingsRepository = AppModule.provideSettingsRepository(context),
-            shouldShowUpdate = AppModule.provideShouldShowUpdate(context)
-        )
-    )
+    val viewModel: SettingsViewModel = koinViewModel()
+    val updateViewModel: UpdateViewModel = koinViewModel()
     val settings by viewModel.settings.collectAsState()
     val updateState by updateViewModel.uiState.collectAsState()
 

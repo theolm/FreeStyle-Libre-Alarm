@@ -5,7 +5,6 @@ import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.activity.enableEdgeToEdge
-import androidx.activity.viewModels
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
 import androidx.core.view.WindowCompat
@@ -31,7 +30,6 @@ import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
-import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavDestination.Companion.hierarchy
 import androidx.navigation.NavGraph.Companion.findStartDestination
 import androidx.navigation.compose.NavHost
@@ -41,7 +39,6 @@ import androidx.navigation.compose.rememberNavController
 import dev.theolm.freestyle_libre_alarm.LibreConstants
 import dev.theolm.freestyle_libre_alarm.data.alarm.AlarmManager
 import dev.theolm.freestyle_libre_alarm.data.service.AlarmForegroundService
-import dev.theolm.freestyle_libre_alarm.presentation.di.AppModule
 import dev.theolm.freestyle_libre_alarm.presentation.ui.history.HistoryScreen
 import dev.theolm.freestyle_libre_alarm.presentation.ui.monitoring.MonitoringScreen
 import dev.theolm.freestyle_libre_alarm.presentation.ui.settings.DownloadCompleteDialog
@@ -55,6 +52,7 @@ import androidx.annotation.StringRes
 import dev.theolm.freestyle_libre_alarm.presentation.viewmodel.SettingsViewModel
 import dev.theolm.freestyle_libre_alarm.presentation.viewmodel.UpdateUiState
 import dev.theolm.freestyle_libre_alarm.presentation.viewmodel.UpdateViewModel
+import org.koin.androidx.viewmodel.ext.android.viewModel
 
 sealed class BottomNavItem(
     val route: String,
@@ -68,13 +66,8 @@ sealed class BottomNavItem(
 
 class MainActivity : ComponentActivity() {
 
-    private val updateViewModel: UpdateViewModel by viewModels {
-        UpdateViewModel.Factory(
-            updateRepository = AppModule.provideUpdateRepository(this),
-            settingsRepository = AppModule.provideSettingsRepository(this),
-            shouldShowUpdate = AppModule.provideShouldShowUpdate(this)
-        )
-    }
+    private val settingsViewModel: SettingsViewModel by viewModel()
+    private val updateViewModel: UpdateViewModel by viewModel()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -88,11 +81,6 @@ class MainActivity : ComponentActivity() {
         handleUpdateIntent(intent)
 
         setContent {
-            val settingsViewModel: SettingsViewModel = viewModel(
-                factory = SettingsViewModel.Factory(
-                    settingsRepository = AppModule.provideSettingsRepository(this)
-                )
-            )
             val settings by settingsViewModel.settings.collectAsState()
             val updateState by updateViewModel.uiState.collectAsState()
             val darkTheme = settings.isDarkModeEnabled

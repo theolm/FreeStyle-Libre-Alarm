@@ -8,7 +8,6 @@ import androidx.annotation.StringRes
 import androidx.core.content.FileProvider
 import androidx.core.net.toUri
 import androidx.lifecycle.ViewModel
-import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.viewModelScope
 import dev.theolm.freestyle_libre_alarm.AppLogger
 import dev.theolm.freestyle_libre_alarm.BuildConfig
@@ -224,16 +223,5 @@ class UpdateViewModel(
         logger.d { "ViewModel cleared, cleaning up" }
         downloadJob?.cancel()
         updateRepository.cleanupDownloadedFile()
-    }
-
-    class Factory(
-        private val updateRepository: UpdateRepository,
-        private val settingsRepository: SettingsRepository,
-        private val shouldShowUpdate: ShouldShowUpdate
-    ) : ViewModelProvider.Factory {
-        @Suppress("UNCHECKED_CAST")
-        override fun <T : ViewModel> create(modelClass: Class<T>): T {
-            return UpdateViewModel(updateRepository, settingsRepository, shouldShowUpdate) as T
-        }
     }
 }
