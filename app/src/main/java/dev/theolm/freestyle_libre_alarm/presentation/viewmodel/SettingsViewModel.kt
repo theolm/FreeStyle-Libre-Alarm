@@ -26,12 +26,6 @@ class SettingsViewModel(
         }
     }
 
-    fun updateLibrePackageName(packageName: String) {
-        viewModelScope.launch {
-            settingsRepository.updateLibrePackageName(packageName)
-        }
-    }
-
     fun updateLowGlucoseEnabled(enabled: Boolean) {
         viewModelScope.launch {
             settingsRepository.updateLowGlucoseEnabled(enabled)

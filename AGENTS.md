@@ -27,11 +27,10 @@ Single-module Android app (Gradle + Kotlin) that acts as a companion alarm for A
 - In-app updater (`UpdateRepositoryImpl`, `UpdateViewModel`) — Checks GitHub releases, downloads APK, installs via intent
 
 ## Gotchas
-- `LibreConstants.FREESTYLE_LIBRE_PACKAGE` defaults to `com.freestylelibre.app`. Settings allow overriding this for regional app variants.
+- `LibreNotificationListenerService` uses a `contains("freestylelibre")` prefix match (case-insensitive) to catch all regional Libre app variants instead of a hardcoded package name.
 - `AlarmManager.stopAlarm()` must be called to release the wake lock and stop ringtone; missing this causes resource leaks.
 - The app uses `enableEdgeToEdge()` in `MainActivity`.
 - Room schema export is disabled (`exportSchema = false`).
-- `LibreNotificationListenerService` hardcodes `com.freestylelibre.app.br` as the target package, ignoring both `LibreConstants` and the DataStore override.
 - `enableEdgeToEdge()` is used in both `MainActivity` and `AlarmActivity`.
 - Snooze system: dismiss sets `snoozeEndTime` in DataStore; listener service checks before triggering.
 - All FreeStyle Libre notifications are logged to DB regardless of alarm state.

@@ -202,7 +202,6 @@ class UpdateViewModelTest {
         override val settings = settingsFlow
 
         override suspend fun updateAlarmEnabled(enabled: Boolean) = Unit
-        override suspend fun updateLibrePackageName(packageName: String) = Unit
         override suspend fun updateLowGlucoseEnabled(enabled: Boolean) = Unit
         override suspend fun updateHighGlucoseEnabled(enabled: Boolean) = Unit
         override suspend fun updateDarkModeEnabled(enabled: Boolean) = Unit

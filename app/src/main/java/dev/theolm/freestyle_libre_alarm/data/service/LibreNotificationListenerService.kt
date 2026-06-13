@@ -34,7 +34,7 @@ class LibreNotificationListenerService : NotificationListenerService() {
         super.onNotificationPosted(sbn)
 
         // Only process notifications from FreeStyle Libre app
-        if (sbn.packageName != TARGET_PACKAGE) {
+        if (!sbn.packageName.contains(FREESTYLE_LIBRE_PREFIX, ignoreCase = true)) {
             return
         }
 
@@ -114,7 +114,7 @@ class LibreNotificationListenerService : NotificationListenerService() {
     }
 
     companion object {
-        const val TARGET_PACKAGE = "com.freestylelibre.app.br"
+        private const val FREESTYLE_LIBRE_PREFIX = "freestylelibre"
 
         fun isEnabled(context: Context): Boolean {
             val componentName = ComponentName(context, LibreNotificationListenerService::class.java)
