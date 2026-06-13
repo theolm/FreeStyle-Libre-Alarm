@@ -27,8 +27,8 @@ import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.RangeSlider
 import androidx.compose.material3.Scaffold
-import androidx.compose.material3.Slider
 import androidx.compose.material3.Switch
 import androidx.compose.material3.SwitchDefaults
 import androidx.compose.material3.Text
@@ -38,7 +38,7 @@ import androidx.compose.material3.TopAppBarDefaults
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
-import androidx.compose.runtime.mutableFloatStateOf
+import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
@@ -126,25 +126,15 @@ fun SettingsScreen() {
                         onCheckedChange = { viewModel.updateUseCustomThresholds(it) }
                     )
                     AnimatedVisibility(visible = settings.useCustomThresholds) {
-                        Column(
+                        ThresholdRangeSlider(
+                            lowValue = settings.lowThresholdMgDl,
+                            highValue = settings.highThresholdMgDl,
+                            onLowValueChangeFinished = { viewModel.updateLowThresholdMgDl(it) },
+                            onHighValueChangeFinished = { viewModel.updateHighThresholdMgDl(it) },
                             modifier = Modifier
                                 .fillMaxWidth()
-                                .padding(horizontal = 20.dp, vertical = 12.dp),
-                            verticalArrangement = Arrangement.spacedBy(16.dp)
-                        ) {
-                            ThresholdSlider(
-                                label = stringResource(R.string.low_glucose_threshold),
-                                value = settings.lowThresholdMgDl,
-                                valueRange = MIN_THRESHOLD..(settings.highThresholdMgDl - THRESHOLD_GAP).toFloat(),
-                                onValueChangeFinished = { viewModel.updateLowThresholdMgDl(it.toInt()) }
-                            )
-                            ThresholdSlider(
-                                label = stringResource(R.string.high_glucose_threshold),
-                                value = settings.highThresholdMgDl,
-                                valueRange = (settings.lowThresholdMgDl + THRESHOLD_GAP).toFloat()..MAX_THRESHOLD,
-                                onValueChangeFinished = { viewModel.updateHighThresholdMgDl(it.toInt()) }
-                            )
-                        }
+                                .padding(horizontal = 20.dp, vertical = 12.dp)
+                        )
                     }
                 }
 
@@ -281,31 +271,57 @@ private fun SettingToggle(
 }
 
 
+private const val RANGE_SLIDER_STEPS = ((MAX_THRESHOLD - MIN_THRESHOLD) / 1f).toInt() - 1
+
 @Composable
-private fun ThresholdSlider(
-    label: String,
-    value: Int,
-    valueRange: ClosedFloatingPointRange<Float>,
-    onValueChangeFinished: (Float) -> Unit,
+private fun ThresholdRangeSlider(
+    lowValue: Int,
+    highValue: Int,
+    onLowValueChangeFinished: (Int) -> Unit,
+    onHighValueChangeFinished: (Int) -> Unit,
     modifier: Modifier = Modifier
 ) {
-    var localValue by remember(value) { mutableFloatStateOf(value.toFloat()) }
+    var localRange by remember(lowValue, highValue) {
+        mutableStateOf(lowValue.toFloat()..highValue.toFloat())
+    }
 
     Column(
-        modifier = modifier.fillMaxWidth(),
+        modifier = modifier,
         verticalArrangement = Arrangement.spacedBy(4.dp)
     ) {
         Text(
-            text = stringResource(R.string.threshold_value_label, label, localValue.toInt()),
+            text = stringResource(
+                R.string.threshold_range_label,
+                localRange.start.toInt(),
+                localRange.endInclusive.toInt()
+            ),
             style = MaterialTheme.typography.bodyLarge,
             color = MaterialTheme.colorScheme.onSurfaceVariant
         )
-        Slider(
-            value = localValue,
-            onValueChange = { localValue = it },
-            onValueChangeFinished = { onValueChangeFinished(localValue) },
-            valueRange = valueRange,
-            steps = (valueRange.endInclusive - valueRange.start).toInt() - 1
+        RangeSlider(
+            value = localRange,
+            onValueChange = { newRange ->
+                val lowMoved = newRange.start != localRange.start
+                if (lowMoved) {
+                    val constrainedLow = newRange.start.coerceIn(
+                        MIN_THRESHOLD,
+                        (localRange.endInclusive - THRESHOLD_GAP).coerceAtMost(MAX_THRESHOLD)
+                    )
+                    localRange = constrainedLow..localRange.endInclusive
+                } else {
+                    val constrainedHigh = newRange.endInclusive.coerceIn(
+                        (localRange.start + THRESHOLD_GAP).coerceAtLeast(MIN_THRESHOLD),
+                        MAX_THRESHOLD
+                    )
+                    localRange = localRange.start..constrainedHigh
+                }
+            },
+            onValueChangeFinished = {
+                onLowValueChangeFinished(localRange.start.toInt())
+                onHighValueChangeFinished(localRange.endInclusive.toInt())
+            },
+            valueRange = MIN_THRESHOLD..MAX_THRESHOLD,
+            steps = RANGE_SLIDER_STEPS
         )
     }
 }

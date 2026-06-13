@@ -38,9 +38,7 @@
     <string name="monitor_low_glucose">Monitorar Glicose Baixa</string>
     <string name="monitor_high_glucose">Monitorar Glicose Alta</string>
     <string name="use_custom_thresholds">Usar limites personalizados</string>
-    <string name="low_glucose_threshold">Limite de glicose baixa</string>
-    <string name="high_glucose_threshold">Limite de glicose alta</string>
-    <string name="threshold_value_label">%1$s: %2$d mg/dL</string>
+    <string name="threshold_range_label">%1$d — %2$d mg/dL</string>
     <string name="appearance">Aparência</string>
     <string name="dark_mode">Modo Escuro</string>
     <string name="update_section">Atualização</string>
